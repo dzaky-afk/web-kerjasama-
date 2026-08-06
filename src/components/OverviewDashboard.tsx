@@ -604,13 +604,15 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         })}
       </div>
 
-      {/* DETAILED INFORMATION MODAL POPUP - PREMIUM REFINED DESIGN */}
+      {/* DETAILED INFORMATION MODAL POPUP - PERFECT OVERFLOW & SCROLLBAR DESIGN */}
       {selectedThemeModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-lg animate-fade-in overflow-y-auto">
-          <div className="max-w-3xl w-full max-h-[92vh] overflow-y-auto bg-white rounded-3xl shadow-2xl border border-slate-200 relative animate-scale-up my-auto no-scrollbar overflow-hidden">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in">
+          
+          {/* Main Card Wrapper - STRICT OVERFLOW HIDDEN + FLEX COL */}
+          <div className="max-w-3xl w-full max-h-[90vh] flex flex-col bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden relative animate-scale-up my-auto">
             
-            {/* Premium Header Banner */}
-            <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white p-6 sm:p-8 rounded-t-3xl relative overflow-hidden shadow-md">
+            {/* Header Banner - Fixed at Top */}
+            <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white p-6 sm:p-8 relative shrink-0">
               {/* Background Light Pattern Blobs */}
               <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
               <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-amber-400/20 rounded-full blur-xl pointer-events-none" />
@@ -643,8 +645,8 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               </div>
             </div>
 
-            {/* Modal Body Content */}
-            <div className="p-6 sm:p-8 space-y-6 bg-slate-50/50">
+            {/* Scrollable Content Body - Inner Scroll Only */}
+            <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6 bg-slate-50/50 pr-5 sm:pr-7">
               
               {/* Description Box */}
               <div className="bg-amber-50/80 border border-amber-200 p-4 sm:p-5 rounded-2xl space-y-2 shadow-xs">
@@ -771,8 +773,8 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 
             </div>
 
-            {/* Premium Dark Footer */}
-            <div className="bg-slate-950 text-white p-5 sm:p-6 rounded-b-3xl flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-800">
+            {/* Premium Dark Footer - Fixed at Bottom */}
+            <div className="bg-slate-950 text-white p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0 border-t border-slate-800">
               <div className="flex items-center space-x-3">
                 <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold shrink-0 border border-amber-400/30">
                   <PhoneCall className="w-4 h-4" />
