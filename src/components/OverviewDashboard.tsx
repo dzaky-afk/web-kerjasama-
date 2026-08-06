@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   Building2, 
   MapPin, 
@@ -75,6 +76,18 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
     }
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedThemeModal]);
+
+  // Lock body scroll when modal is open to prevent background scrolling bug
+  React.useEffect(() => {
+    if (selectedThemeModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
     };
   }, [selectedThemeModal]);
 
@@ -619,11 +632,11 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         })}
       </div>
 
-      {/* DETAILED INFORMATION MODAL POPUP - PERFECT OVERFLOW & CENTERING */}
-      {selectedThemeModal && (
+      {/* DETAILED INFORMATION MODAL POPUP - PORTAL RENDER DIRECTLY ON BODY */}
+      {selectedThemeModal && createPortal(
         <div 
           onClick={() => setSelectedThemeModal(null)}
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in overflow-y-auto"
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in overflow-y-auto"
         >
           
           {/* Main Card Wrapper - STRICT OVERFLOW HIDDEN + FLEX COL + PERFECT CENTER */}
@@ -849,7 +862,8 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             </div>
 
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* WORKFLOW BANNER SECTION */}
