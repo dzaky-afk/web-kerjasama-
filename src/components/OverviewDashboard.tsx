@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Building2, 
   MapPin, 
@@ -13,15 +13,18 @@ import {
   Globe, 
   Layers, 
   ArrowUpRight, 
-  Compass, 
   Handshake, 
   Mountain, 
-  Droplets, 
-  Zap, 
-  ChevronDown, 
   CheckCircle2,
   FilePlus,
-  Activity
+  Activity,
+  Info,
+  X,
+  FileText,
+  PhoneCall,
+  Check,
+  Building,
+  ChevronRight
 } from 'lucide-react';
 import { UserSession } from './LoginPage';
 
@@ -31,14 +34,39 @@ interface OverviewDashboardProps {
   pendingApprovalCount?: number;
 }
 
+interface CooperationTheme {
+  id: string;
+  title: string;
+  subtitle: string;
+  badge: string;
+  badgeBg: string;
+  icon: any;
+  gradient: string;
+  borderColor: string;
+  description: string;
+  highlights: { label: string; detail: string }[];
+  metrics: { title: string; value: string; icon: any };
+  // Extended Detail Information
+  details: {
+    legalBasis: string[];
+    activePartners: string[];
+    priorityLocations: string[];
+    activities: string[];
+    requiredDocs: string[];
+    expectedImpact: string[];
+    contactSubKomisi: string;
+  };
+}
+
 export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({ 
   user, 
   onNavigateTab,
   pendingApprovalCount = 0
 }) => {
+  const [selectedThemeModal, setSelectedThemeModal] = useState<CooperationTheme | null>(null);
 
   // Stacked Section Cards Data for Gunungkidul Regional Cooperation
-  const cooperationThemes = [
+  const cooperationThemes: CooperationTheme[] = [
     {
       id: 'ksad',
       title: '1. Kerja Sama Antar Daerah (KSAD)',
@@ -54,7 +82,46 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         { label: 'Pengelolaan Air Bersih & Karst', detail: 'Konservasi sistem sungai bawah tanah karst Gua Bribin & Seropan lintas perbatasan wilayah administrasi.' },
         { label: 'Koridor Pariwisata Pawonsari', detail: 'Integrasi paket wisata Geopark Gunungsewu (Pantai Klayar Pacitan, Museum Karst Wonogiri, & Pantai Gunungkidul).' }
       ],
-      metrics: { title: 'Mitra Daerah Aktif', value: '8 Kab/Kota', icon: Globe }
+      metrics: { title: 'Mitra Daerah Aktif', value: '8 Kab/Kota', icon: Globe },
+      details: {
+        legalBasis: [
+          'Permendagri No. 22 Tahun 2020 tentang Tata Cara Kerja Sama Daerah dengan Daerah Lain',
+          'Peraturan Daerah Kabupaten Gunungkidul No. 4 Tahun 2021 tentang Kerjasama Daerah',
+          'Naskah Kesepakatan Bersama Kawasan Pawonsari (Pacitan, Wonogiri, Gunungkidul)'
+        ],
+        activePartners: [
+          'Pemerintah Kota Yogyakarta',
+          'Pemerintah Kabupaten Bantul',
+          'Pemerintah Kabupaten Sleman',
+          'Pemerintah Kabupaten Kulon Progo',
+          'Pemerintah Kabupaten Pacitan (Jawa Timur)',
+          'Pemerintah Kabupaten Wonogiri (Jawa Tengah)'
+        ],
+        priorityLocations: [
+          'Kapanewon Semanu (Fasilitas Pompa Air Karst Bribin)',
+          'Kapanewon Ponjong & Karangmojo (Kawasan Pertanian Pangan Lahan Kering)',
+          'Kapanewon Girisubo & Rongkop (Perbatasan Pacitan - Jateng)',
+          'Kapanewon Patuk (Gerbang Pintu Masuk Pariwisata DIY)'
+        ],
+        activities: [
+          'Pengembangan Sistem Informasi Pasar Hasil Tani Perbatasan Lintas Kabupaten.',
+          'Pembangunan Infrastruktur Bersama Jalur Jalan Lintas Selatan (JJLS) Koridor Pariwisata.',
+          'Konservasi Gabungan Daerah Aliran Sungai (DAS) & Gua Karst Subterranean Water.',
+          'Pelatihan Bersama Mitigasi Bencana Kekeringan & Penanganan Kebakaran Hutan.'
+        ],
+        requiredDocs: [
+          'Naskah Kesepakatan Bersama (MoU) antar Kepala Daerah (Bupati/Walikota).',
+          'Perjanjian Kerja Sama (PKS) antar Kepala Dinas/Organisasi Perangkat Daerah (OPD).',
+          'Kerangka Acuan Kerja (KAK) & Analisis Kebutuhan Anggaran APBD Bersama.',
+          'Surat Keputusan Tim Kerja Sama Daerah (TKKSD) Kedua Belah Pihak.'
+        ],
+        expectedImpact: [
+          'Menjamin ketersediaan pasokan air bersih 12.000 KK di wilayah karst selatan.',
+          'Meningkatkan kunjungan wisatawan Geopark Gunungsewu hingga +35% per tahun.',
+          'Stabilisasi harga komoditas jagung & kedelai lokal di tingkat petani.'
+        ],
+        contactSubKomisi: 'Sub-Komisi KSAD Sekretariat TKKSD Setda Gunungkidul (Telp: 0274-391002 / Email: ksad@gunungkidulkab.go.id)'
+      }
     },
     {
       id: 'ksdpk',
@@ -71,7 +138,45 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         { label: 'CSR Digitalisasi Agro-Komoditas', detail: 'Program modernisasi alat panen & green-house berbasis IoT kerja sama dengan korporasi nasional.' },
         { label: 'Jaringan Energi Terbarukan (PLTS)', detail: 'Pemasangan panel surya pompa air bawah tanah karst untuk suplai air minum daerah rawan kekeringan.' }
       ],
-      metrics: { title: 'Realisasi Komitmen CSR', value: 'Rp 42.8 Miliar', icon: TrendingUp }
+      metrics: { title: 'Realisasi Komitmen CSR', value: 'Rp 42.8 Miliar', icon: TrendingUp },
+      details: {
+        legalBasis: [
+          'Permendagri No. 22 Tahun 2020 Tata Cara KSDPK (Kerja Sama Daerah dengan Pihak Ketiga)',
+          'Perda Kabupaten Gunungkidul No. 5 Tahun 2021 tentang Tanggung Jawab Sosial Perusahaan (TJSP)',
+          'Perbup Gunungkidul No. 18 Tahun 2022 tentang Insentif & Kemudahan Berinvestasi'
+        ],
+        activePartners: [
+          'PT Kerjasama Teknologi Nusantara',
+          'PT Pembangunan Pariwisata Gunungkidul (BUMD)',
+          'Bank BPD DIY Cabang Wonosari',
+          'Danone Aqua Indonesia (Program Konservasi Air)',
+          'PT Telkom Indonesia (Digitalisasi Desa Wisata)'
+        ],
+        priorityLocations: [
+          'Kapanewon Tanjungsari & Tepus (Kawasan Destinasi Pantai Selatan)',
+          'Kapanewon Panggang & Purwosari (Kawasan Investasi Pariwisata Karst)',
+          'Kapanewon Nglipar & Playen (Kawasan Pertanian & Kehutanan)',
+          'Kapanewon Wonosari (Pusat Sentra Kuliner & UMKM)'
+        ],
+        activities: [
+          'Penyediaan Fasilitas Umum & Ruang Terbuka Hijau melalui Program CSR Korporasi.',
+          'Pembangunan Dermaga Wisata & Fasilitas Olahraga Maritim Pantai Selatan.',
+          'Pemberdayaan Petani Karst dengan Pembagian 50.000 Bibit Pohon Buah Produktif.',
+          'Pemasangan WiFi Gratis & Sensor Kualitas Air Bawah Tanah di 40 Desa.'
+        ],
+        requiredDocs: [
+          'Akta Pendirian Perusahaan & Pengesahan Kemenkumham RI.',
+          'Nomor Induk Berusaha (NIB) Berbasis Risiko (OSS RBA).',
+          'Profil Perusahaan & Laporan Keuangan Audit 2 Tahun Terakhir.',
+          'Naskah Proposal Usulan Kemitraan (Feasibility Study) Lengkap.'
+        ],
+        expectedImpact: [
+          'Penyerapan tenaga kerja lokal Gunungkidul hingga 1.800+ pekerja baru.',
+          'Peningkatan Pendapatan Asli Daerah (PAD) dari sektor retribusi & pajak investasi.',
+          'Penyediaan fasilitas air minum bersih berbasis Solar Cell di 12 titik rawan.'
+        ],
+        contactSubKomisi: 'Sub-Komisi KSDPK Dinas Penanaman Modal & Pelayanan Terpadu Satu Pintu (DPMPTSP) / TKKSD Gunungkidul'
+      }
     },
     {
       id: 'ksdpt',
@@ -88,7 +193,46 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         { label: 'Riset Pelestarian Geopark UNESCO', detail: 'Studi ilmiah keberlanjutan ekosistem bentang alam karst Gunungsewu dan biota laut pantai selatan.' },
         { label: 'Riset Teknologi Pengolahan Pangan', detail: 'Hilirisasi produk olahan mocaf, thiwul instant, serta teknologi pengawetan makanan tradisional.' }
       ],
-      metrics: { title: 'Kampus Mitra MoU', value: '24 Kampus', icon: BookOpen }
+      metrics: { title: 'Kampus Mitra MoU', value: '24 Kampus', icon: BookOpen },
+      details: {
+        legalBasis: [
+          'Permendagri No. 22 Tahun 2020 Bab IV Kerja Sama Riset & Pendidikan Tinggi',
+          'Nota Kesepahaman (MoU) Bupati Gunungkidul dengan Rektor Universitas Mitra',
+          'Pedoman Pelaksanaan KKN Tematik & MBKM Kementerian Pendikti RI'
+        ],
+        activePartners: [
+          'Universitas Gadjah Mada (UGM Yogyakarta)',
+          'Universitas Negeri Yogyakarta (UNY Wonosari Campus)',
+          'UPN "Veteran" Yogyakarta',
+          'UIN Sunan Kalijaga Yogyakarta',
+          'Universitas Atma Jaya Yogyakarta',
+          'Institut Teknologi Nasional Yogyakarta (ITNY)'
+        ],
+        priorityLocations: [
+          'Kapanewon Patuk (Kawasan Gunung Nglanggeran - Riset Volkano-Karst)',
+          'Kapanewon Semanu & Bedoyo (Riset Sumber Daya Geologi & Goa Karst)',
+          'Kapanewon Paliyan & Saptosari (Pendampingan BUMDes & Olahan Pangan)',
+          'Seluruh 144 Kalurahan Kabupaten Gunungkidul (Lokasi KKN Tematik)'
+        ],
+        activities: [
+          'Penerjunan Mahasiswa KKN Tematik (Tiap Januari & Juli) untuk Digitalisasi Kalurahan.',
+          'Riset Pemetaan Potensi Air Bawah Tanah Menggunakan Metode Geolistrik.',
+          'Pendampingan Inkubasi Bisnis UMKM Produk Pangan Olahan Mocaf & Kakao.',
+          'Pelatihan Tata Kelola Keuangan BUMDes Berbasis Aplikasi Akuntansi Digital.'
+        ],
+        requiredDocs: [
+          'Surat Permohonan Kerja Sama Riset / KKN resmi dari Rektor/Dekan.',
+          'Dokumen Kerangka Acuan Kerja (KAK) Riset atau Program Pengabdian Masyarakat.',
+          'Surat Tugas Dosen Pembimbing Lapangan (DPL) & Daftar Mahasiswa.',
+          'Rancangan Perjanjian Kerja Sama (PKS) Fakultas dengan OPD Teknis.'
+        ],
+        expectedImpact: [
+          'Digitalisasi 100% profil desa dan pemetaan potensi UMKM di 144 Kalurahan.',
+          'Inovasi alat filtrasi air minum murah berbasis batuan zeolit alami.',
+          'Publikasi jurnal ilmiah internasional bertema pelestarian Geopark UNESCO.'
+        ],
+        contactSubKomisi: 'Sub-Komisi KSDPT Badan Planning & Riset Daerah (Bapperida) Kab. Gunungkidul'
+      }
     },
     {
       id: 'ksd-umkm',
@@ -105,14 +249,52 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         { label: 'Pendampingan Desa Wisata Berkelanjutan', detail: 'Standardisasi homestay warga dan sertifikasi CHSE untuk 40+ destinasi wisata berbasis komunitas.' },
         { label: 'Pemasaran E-Commerce Produk Kerajinan', detail: 'Bimbingan teknis ekspor batu alam, batik kayu, dan produk kerajinan bambu ke pasar mancanegara.' }
       ],
-      metrics: { title: 'Binaan UMKM Terfasilitasi', value: '1,280 Unit', icon: Award }
+      metrics: { title: 'Binaan UMKM Terfasilitasi', value: '1,280 Unit', icon: Award },
+      details: {
+        legalBasis: [
+          'Permendagri No. 22 Tahun 2020 Bab V Pelibatan Ormas & Komunitas Masyarakat',
+          'Perda Kab. Gunungkidul No. 8 Tahun 2020 tentang Pemberdayaan Usaha Mikro',
+          'SK Bupati tentang Penetapan Desa Wisata & Pokdarwis Kabupaten Gunungkidul'
+        ],
+        activePartners: [
+          'Forum Pokdarwis Kabupaten Gunungkidul',
+          'Asosiasi Pengusaha Kuliner & Olahan Pangan Gunungkidul',
+          'Koperasi Batik Kayu Bobung Nglipar',
+          'Yayasan Konservasi Alam Nusantara (YKAN)',
+          'Himpunan Pramuwisata Indonesia (HPI) Cabang Gunungkidul'
+        ],
+        priorityLocations: [
+          'Kalurahan Bobung Kapanewon Nglipar (Sentra Kerajinan Batik Kayu)',
+          'Kalurahan Nglanggeran Kapanewon Patuk (Desa Wisata Terbaik UNWTO)',
+          'Kalurahan Bleberan Kapanewon Playen (Sentra Wisata Air Sri Gethuk)',
+          'Kalurahan Tepus & Purwosari (Sentra Olahan Pangan & Homestay)'
+        ],
+        activities: [
+          'Bimbingan Teknis Digital Marketing & Onboarding E-Commerce Tokopedia/Shopee.',
+          'Pelatihan Manajerial Pengelolaan Homestay & Sertifikasi CHSE Kebersihan.',
+          'Fasilitasi Uji Laboratorium & Sertifikasi Halal Gratis bagi 500 Olahan Pangan.',
+          'Penyelenggaraan Festival Kuliner Khas & Pameran Kerajinan Batu Alam.'
+        ],
+        requiredDocs: [
+          'Surat Keputusan (SK) Pengesahan Komunitas / Kelompok dari Lurah/Kapanewon.',
+          'Struktur Pengurus Resmi & Daftar Anggota Aktif.',
+          'Profil Komunitas & Portofolio Kegiatan Pemberdayaan Masyarakat.',
+          'Surat Permohonan Kemitraan Program Kerja Sama TKKSD.'
+        ],
+        expectedImpact: [
+          'Kenaikan omzet penjualan produk UMKM lokal rata-rata +45% per semester.',
+          'Legalitas sertifikat Halal & PIRT lengkap untuk 1.200+ produk olahan.',
+          'Penghargaan Desa Wisata Berkelanjutan Tingkat Nasional & Internasional.'
+        ],
+        contactSubKomisi: 'Sub-Komisi Kemitraan Komunitas Dinas Koperasi & UMKM / Dinas Pariwisata Kab. Gunungkidul'
+      }
     }
   ];
 
   return (
     <div className="space-y-10 animate-fade-in relative pb-12">
       
-      {/* SMARTPHONE MOBILE DASHBOARD DASHBOARD QUICK ACCESS CARDS */}
+      {/* SMARTPHONE MOBILE DASHBOARD QUICK ACCESS CARDS */}
       <div className="md:hidden space-y-4">
         <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 text-white rounded-2xl p-4 shadow-lg flex items-center justify-between">
           <div>
@@ -301,7 +483,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
           Fokus & Bidang Kerja Sama Kabupaten Gunungkidul
         </h2>
         <p className="text-xs sm:text-sm text-slate-600 font-medium">
-          Gulir ke bawah (*scroll down*) untuk melihat setiap tema kerja sama yang saling menumpuk secara dinamis.
+          Gulir ke bawah (*scroll down*) dan klik <strong>"Lihat Informasi Detail"</strong> pada tiap kartu untuk melihat rincian lengkap.
         </p>
       </div>
 
@@ -311,7 +493,6 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
           const Icon = theme.icon;
           const MetricIcon = theme.metrics.icon;
 
-          // Top offset calculation for sticky stack effect (top-24, top-28, top-32, top-36 etc.)
           const stickyTopClasses = [
             'top-24',
             'top-28',
@@ -335,12 +516,12 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 
                 {/* Card Header & Badge */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10 border-b border-slate-200 pb-5">
-                  <div className="flex items-center space-x-3.5">
+                  <div className="flex items-center space-x-3.5 cursor-pointer" onClick={() => setSelectedThemeModal(theme)}>
                     <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold shadow-md shrink-0">
                       <Icon className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-extrabold text-slate-900 leading-tight">
+                      <h3 className="text-xl font-extrabold text-slate-900 leading-tight hover:text-amber-700 transition">
                         {theme.title}
                       </h3>
                       <p className="text-xs font-semibold text-slate-600 pt-0.5">
@@ -353,9 +534,13 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                     <span className={`px-3 py-1 rounded-full text-xs font-extrabold border ${theme.badgeBg}`}>
                       {theme.badge}
                     </span>
-                    <span className="text-[10px] text-slate-600 font-mono font-bold bg-slate-100 border border-slate-200 px-2 py-1 rounded-lg">
-                      Kartu #{index + 1}
-                    </span>
+                    <button
+                      onClick={() => setSelectedThemeModal(theme)}
+                      className="px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-xs transition cursor-pointer"
+                    >
+                      <Info className="w-3.5 h-3.5 text-amber-700" />
+                      <span>Lihat Informasi Detail</span>
+                    </button>
                   </div>
                 </div>
 
@@ -369,11 +554,15 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                   {theme.highlights.map((item, hIdx) => (
                     <div 
                       key={hIdx} 
-                      className="bg-white/80 border border-slate-200/80 p-4 rounded-2xl space-y-1.5 shadow-xs hover:border-amber-400 transition"
+                      onClick={() => setSelectedThemeModal(theme)}
+                      className="bg-white/80 border border-slate-200/80 p-4 rounded-2xl space-y-1.5 shadow-xs hover:border-amber-400 transition cursor-pointer group"
                     >
-                      <div className="flex items-center space-x-1.5 text-slate-900 font-bold text-xs">
-                        <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0" />
-                        <span>{item.label}</span>
+                      <div className="flex items-center justify-between text-slate-900 font-bold text-xs">
+                        <span className="flex items-center gap-1.5">
+                          <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0" />
+                          {item.label}
+                        </span>
+                        <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transition" />
                       </div>
                       <p className="text-[11px] text-slate-600 leading-normal font-medium">
                         {item.detail}
@@ -392,13 +581,23 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                     </span>
                   </div>
 
-                  <button
-                    onClick={() => onNavigateTab('proposal')}
-                    className="inline-flex items-center justify-center space-x-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
-                  >
-                    <span>Ajukan Kerjasama Tema Ini</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-amber-400" />
-                  </button>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => setSelectedThemeModal(theme)}
+                      className="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-xl text-xs font-extrabold flex items-center space-x-1.5 transition cursor-pointer"
+                    >
+                      <Info className="w-3.5 h-3.5 text-amber-700" />
+                      <span>Detail Selengkapnya</span>
+                    </button>
+
+                    <button
+                      onClick={() => onNavigateTab('proposal')}
+                      className="inline-flex items-center justify-center space-x-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
+                    >
+                      <span>Ajukan Kerjasama Tema Ini</span>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-amber-400" />
+                    </button>
+                  </div>
                 </div>
 
               </div>
@@ -406,6 +605,172 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
           );
         })}
       </div>
+
+      {/* DETAILED INFORMATION MODAL POPUP */}
+      {selectedThemeModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md animate-fade-in overflow-y-auto">
+          <div className="max-w-3xl w-full max-h-[90vh] overflow-y-auto glass-panel bg-white/98 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl border border-amber-500/40 relative animate-scale-up my-auto">
+            
+            {/* Modal Header */}
+            <div className="flex items-start justify-between border-b border-slate-200 pb-4 relative z-10">
+              <div className="flex items-center space-x-4">
+                <div className="w-14 h-14 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold shadow-lg shrink-0">
+                  {React.createElement(selectedThemeModal.icon, { className: "w-7 h-7" })}
+                </div>
+                <div>
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black border ${selectedThemeModal.badgeBg}`}>
+                    {selectedThemeModal.badge}
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight pt-1">
+                    {selectedThemeModal.title}
+                  </h3>
+                  <p className="text-xs font-medium text-amber-800">
+                    {selectedThemeModal.subtitle}
+                  </p>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => setSelectedThemeModal(null)}
+                className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl transition cursor-pointer shrink-0"
+                title="Tutup Modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Description Overview */}
+            <div className="bg-amber-50/60 border border-amber-200/80 p-4 rounded-2xl space-y-1">
+              <h4 className="text-xs font-extrabold text-amber-900 flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-amber-600" />
+                <span>Deskripsi & Latar Belakang Kemitraan</span>
+              </h4>
+              <p className="text-xs text-slate-700 leading-relaxed font-normal">
+                {selectedThemeModal.description}
+              </p>
+            </div>
+
+            {/* Grid 2 Column Detail Info */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+              
+              {/* Dasar & Payung Hukum */}
+              <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2">
+                <h4 className="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs border-b border-slate-200 pb-1.5">
+                  <FileText className="w-4 h-4 text-amber-600" />
+                  <span>Dasar Regulasi & Payung Hukum</span>
+                </h4>
+                <ul className="space-y-1.5 pr-1">
+                  {selectedThemeModal.details.legalBasis.map((legal, lIdx) => (
+                    <li key={lIdx} className="flex items-start gap-1.5 text-slate-700 text-[11px] leading-snug">
+                      <Check className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
+                      <span>{legal}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Mitra & Instansi Terlibat */}
+              <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2">
+                <h4 className="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs border-b border-slate-200 pb-1.5">
+                  <Building className="w-4 h-4 text-emerald-600" />
+                  <span>Mitra Strategis & Lembaga Terlibat</span>
+                </h4>
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {selectedThemeModal.details.activePartners.map((partner, pIdx) => (
+                    <span 
+                      key={pIdx} 
+                      className="bg-white border border-slate-200 text-slate-800 px-2 py-1 rounded-lg text-[10px] font-bold shadow-2xs"
+                    >
+                      {partner}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Wilayah & Kapanewon Prioritas */}
+              <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2">
+                <h4 className="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs border-b border-slate-200 pb-1.5">
+                  <MapPin className="w-4 h-4 text-sky-600" />
+                  <span>Lokasi & Kapanewon Prioritas</span>
+                </h4>
+                <ul className="space-y-1 text-slate-700 text-[11px]">
+                  {selectedThemeModal.details.priorityLocations.map((loc, locIdx) => (
+                    <li key={locIdx} className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
+                      <span>{loc}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Dampak & Outpu Hasil */}
+              <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2">
+                <h4 className="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs border-b border-slate-200 pb-1.5">
+                  <Award className="w-4 h-4 text-orange-600" />
+                  <span>Dampak & Capaian Kemitraan</span>
+                </h4>
+                <ul className="space-y-1.5 text-slate-700 text-[11px]">
+                  {selectedThemeModal.details.expectedImpact.map((imp, impIdx) => (
+                    <li key={impIdx} className="flex items-start gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                      <span>{imp}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+            </div>
+
+            {/* Dokumen Persyaratan & Prosedur Submit */}
+            <div className="bg-amber-50/50 border border-amber-300 p-4 rounded-2xl space-y-3">
+              <h4 className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
+                <FileCheck2 className="w-4 h-4 text-amber-600" />
+                <span>Checklist Dokumen Persyaratan PDF (Permendagri No. 22/2020)</span>
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                {selectedThemeModal.details.requiredDocs.map((doc, dIdx) => (
+                  <div key={dIdx} className="bg-white p-2.5 rounded-xl border border-amber-200 flex items-start gap-2 shadow-2xs">
+                    <span className="bg-amber-100 text-amber-900 font-bold px-1.5 py-0.5 rounded text-[9px] shrink-0 font-mono">
+                      Doc #{dIdx + 1}
+                    </span>
+                    <span className="text-slate-800 font-medium">{doc}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Contact Person Sekretariat TKKSD */}
+            <div className="bg-slate-900 text-white p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+              <div className="flex items-center space-x-2">
+                <PhoneCall className="w-5 h-5 text-amber-400 shrink-0" />
+                <div>
+                  <span className="text-[10px] text-amber-400 font-bold block">Kontak Sekretariat TKKSD Gunungkidul</span>
+                  <p className="text-[11px] opacity-90 font-medium">{selectedThemeModal.details.contactSubKomisi}</p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2 shrink-0">
+                <button
+                  onClick={() => setSelectedThemeModal(null)}
+                  className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold cursor-pointer transition"
+                >
+                  Tutup
+                </button>
+                <button
+                  onClick={() => {
+                    setSelectedThemeModal(null);
+                    onNavigateTab('proposal');
+                  }}
+                  className="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold rounded-xl shadow-md cursor-pointer transition flex items-center gap-1"
+                >
+                  <span>Ajukan Proposal Now &rarr;</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
 
       {/* WORKFLOW BANNER SECTION */}
       <div className="glass-panel p-6 sm:p-8 rounded-3xl space-y-5 border border-amber-400/50 shadow-xl bg-white/90 relative z-40">
