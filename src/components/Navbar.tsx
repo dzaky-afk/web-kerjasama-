@@ -12,6 +12,7 @@ import {
   CheckSquare,
   Bell,
   X,
+  Menu,
   ChevronRight,
   FileCheck2
 } from 'lucide-react';
@@ -33,6 +34,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   pendingApprovalCount = 0
 }) => {
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   const baseNavItems: { id: 'overview' | 'registration' | 'proposal' | 'tracking' | 'regulations' | 'setda_admin'; label: string; icon: any }[] = [
     { id: 'overview', label: 'Beranda', icon: Home },
@@ -222,12 +224,85 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>Portal Resmi TKKSD</span>
               </div>
             )}
+            {/* Mobile Hamburger Drawer Menu Toggle Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-2 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 rounded-xl transition cursor-pointer shrink-0 shadow-xs"
+              title="Buka Menu Navigasi Mobile"
+            >
+              {isMobileMenuOpen ? <X className="w-5 h-5 text-amber-600" /> : <Menu className="w-5 h-5 text-slate-800" />}
+            </button>
           </div>
 
         </div>
       </div>
 
-      {/* Mobile Navigation Row */}
+      {/* Mobile Drawer Dropdown Menu */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden glass-panel bg-white/95 border-t border-b border-slate-200 px-4 py-4 space-y-3 shadow-2xl animate-fade-in backdrop-blur-xl">
+          <div className="text-[10px] font-black text-amber-900 uppercase tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200">
+            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+            <span>Menu Utama MEMITRAN Gunungkidul</span>
+          </div>
+
+          <div className="grid grid-cols-1 gap-1.5">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              const isApprovalTab = item.id === 'setda_admin';
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setIsMobileMenuOpen(false);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition duration-200 cursor-pointer ${
+                    isActive
+                      ? 'glass-button-primary text-white shadow-md'
+                      : 'text-slate-700 bg-slate-50 hover:bg-amber-50 border border-slate-200/80'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2.5">
+                    <Icon className="w-4 h-4" />
+                    <span>{item.label}</span>
+                  </div>
+                  {isApprovalTab && pendingApprovalCount > 0 && (
+                    <span className="bg-rose-500 text-white font-black text-[10px] px-2 py-0.5 rounded-full animate-pulse">
+                      {pendingApprovalCount} Perlu ACC
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {user && (
+            <div className="pt-3 border-t border-slate-200 flex items-center justify-between">
+              <div className="flex flex-col text-left">
+                <span className="text-xs font-black text-slate-900">{user.name}</span>
+                <span className="text-[10px] text-amber-800 font-bold">
+                  {user.role === 'TKKSD_ADMIN' ? 'Verifikator TKKSD Setda' : user.institutionName}
+                </span>
+              </div>
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  onLogout();
+                }}
+                className="px-3.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold flex items-center space-x-1 transition cursor-pointer"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Keluar</span>
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Mobile Quick Horizontal Scroll Navigation Row */}
       <div className="lg:hidden flex overflow-x-auto px-4 py-2 bg-white/90 border-t border-slate-200 gap-1.5 backdrop-blur-md no-scrollbar">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -236,8 +311,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs whitespace-nowrap font-medium transition ${
-                isActive ? 'glass-button-primary text-white' : 'text-slate-700 bg-slate-100 border border-slate-200'
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs whitespace-nowrap font-bold transition cursor-pointer ${
+                isActive ? 'glass-button-primary text-white shadow-xs' : 'text-slate-700 bg-slate-100 border border-slate-200'
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
