@@ -205,7 +205,7 @@ export const dbService = {
     });
 
     setStoredData('memitran_proposals', updated);
-    return updated.find(p => p.id === proposalId)!;
+    return updated.find(p => p.id === proposalId) || current.find(p => p.id === proposalId)!;
   },
 
   async addMonevReport(proposalId: string, reportData: Omit<MonevReport, 'id' | 'proposalId' | 'evaluatedAt'>): Promise<Proposal> {
@@ -243,7 +243,7 @@ export const dbService = {
     });
 
     setStoredData('memitran_proposals', updated);
-    return updated.find(p => p.id === proposalId)!;
+    return updated.find(p => p.id === proposalId) || current.find(p => p.id === proposalId)!;
   },
 
   // 3. REGULATIONS

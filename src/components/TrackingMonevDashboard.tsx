@@ -44,6 +44,13 @@ export const TrackingMonevDashboard: React.FC<TrackingMonevDashboardProps> = ({
   const [showLogModal, setShowLogModal] = useState<boolean>(false);
   const [showAddMonevModal, setShowAddMonevModal] = useState<boolean>(false);
 
+  // Auto sync selected proposal when proposals array loads
+  React.useEffect(() => {
+    if ((!selectedProposal || !proposals.some(p => p.id === selectedProposal.id)) && proposals.length > 0) {
+      setSelectedProposal(proposals[0]);
+    }
+  }, [proposals, selectedProposal]);
+
   // Form State for new Monev Report
   const [monevPeriod, setMonevPeriod] = useState<MonevPeriod>('TRIWULAN_1');
   const [progressPercentage, setProgressPercentage] = useState<number>(75);

@@ -50,6 +50,13 @@ export const SetdaAdminDashboard: React.FC<SetdaAdminDashboardProps> = ({
   const [reviewerComment, setReviewerComment] = useState<string>('');
   const [actorRole, setActorRole] = useState<string>('Staff Sekretariat TKKSD Setda');
 
+  // Auto sync selected proposal when proposals array loads
+  React.useEffect(() => {
+    if ((!selectedProposal || !proposals.some(p => p.id === selectedProposal.id)) && proposals.length > 0) {
+      setSelectedProposal(proposals[0]);
+    }
+  }, [proposals, selectedProposal]);
+
   // Categorize Proposals
   const pendingCount = proposals.filter(p => p.status === 'VERIFICATION_FILES' || p.status === 'REVIEW_DINAS').length;
   const approvedCount = proposals.filter(p => p.status === 'APPROVED' || p.status === 'MONEV_PHASE').length;

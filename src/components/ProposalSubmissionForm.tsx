@@ -44,6 +44,13 @@ export const ProposalSubmissionForm: React.FC<ProposalFormProps> = ({
   const [selectedInstitutionId, setSelectedInstitutionId] = useState<string>(
     registeredInstitutions[0]?.id || 'inst-1'
   );
+
+  // Auto sync selected institution when list loads
+  React.useEffect(() => {
+    if (registeredInstitutions.length > 0 && !registeredInstitutions.some(i => i.id === selectedInstitutionId)) {
+      setSelectedInstitutionId(registeredInstitutions[0]?.id || 'inst-1');
+    }
+  }, [registeredInstitutions, selectedInstitutionId]);
   const [title, setTitle] = useState<string>('');
   const [sector, setSector] = useState<ProposalSector>('DIGITAL_TEKNOLOGI');
   const [description, setDescription] = useState<string>('');
