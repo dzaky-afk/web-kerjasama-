@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500">
+  <defs>
+    <!-- Official Color Gradients -->
+    <linearGradient id="shieldOrange" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F97316" />
+      <stop offset="100%" stop-color="#EA580C" />
+    </linearGradient>
+
+    <linearGradient id="innerYellow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FACC15" />
+      <stop offset="100%" stop-color="#EAB308" />
+    </linearGradient>
+
+    <linearGradient id="skyBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+
+    <linearGradient id="treeGreen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#16A34A" />
+      <stop offset="100%" stop-color="#15803D" />
+    </linearGradient>
+  </defs>
+
+  <g id="LambangGunungkidul">
+    <!-- 1. Outer Black Border Frame -->
+    <path d="M 25 25 L 375 25 L 375 320 C 375 425 200 488 200 488 C 200 488 25 425 25 320 Z" fill="#000000" stroke="#000000" stroke-width="4" stroke-linejoin="miter" />
+
+    <!-- 2. Inner White Border Line -->
+    <path d="M 33 33 L 367 33 L 367 316 C 367 417 200 478 200 478 C 200 478 33 417 33 316 Z" fill="#FFFFFF" />
+
+    <!-- 3. Main Orange Outer Shield Background -->
+    <path d="M 40 40 L 360 40 L 360 312 C 360 410 200 468 200 468 C 200 468 40 410 40 312 Z" fill="url(#shieldOrange)" />
+
+    <!-- 4. Inner Yellow Crowned Shield Contour -->
+    <!-- Black Outline -->
+    <path d="M 60 140 C 60 70 125 55 200 55 C 275 55 340 70 340 140 C 340 290 340 330 340 330 C 340 370 200 416 200 416 C 200 416 60 370 60 330 Z" fill="#000000" />
+    <!-- White Gap -->
+    <path d="M 65 140 C 65 74 128 59 200 59 C 272 59 335 74 335 140 C 335 288 335 327 335 327 C 335 365 200 410 200 410 C 200 410 65 365 65 327 Z" fill="#FFFFFF" />
+    <!-- Yellow Fill -->
+    <path d="M 70 140 C 70 78 131 63 200 63 C 269 63 330 78 330 140 C 330 286 330 324 330 324 C 330 360 200 404 200 404 C 200 404 70 360 70 324 Z" fill="url(#innerYellow)" />
+
+    <!-- 5. Top Ribbon: DHAKSINARGA BHUMIKARTA -->
+    <g transform="translate(0, 5)">
+      <path d="M 90 140 C 130 90 270 90 310 140 L 328 128 C 278 72 122 72 72 128 Z" fill="#000000" />
+      <path d="M 94 138 C 132 92 268 92 306 138 L 322 129 C 274 75 126 75 78 129 Z" fill="#FFFFFF" />
+      
+      <!-- Curved Text Paths -->
+      <path id="leftArc" d="M 92 135 C 128 95 190 95 190 95" fill="none" />
+      <path id="rightArc" d="M 210 95 C 210 95 272 95 308 135" fill="none" />
+
+      <text font-family="Arial, sans-serif" font-weight="900" font-size="11.5" fill="#000000" letter-spacing="0.5">
+        <textPath href="#leftArc" startOffset="8%">DHAKSINARGA</textPath>
+      </text>
+      <text font-family="Arial, sans-serif" font-weight="900" font-size="11.5" fill="#000000" letter-spacing="0.5">
+        <textPath href="#rightArc" startOffset="10%">BHUMIKARTA</textPath>
+      </text>
+    </g>
+
+    <!-- 6. Gold Star (Bintang Emas) -->
+    <polygon points="200,68 206,84 223,84 209,95 214,111 200,101 186,111 191,95 177,84 194,84" fill="#FACC15" stroke="#000000" stroke-width="2.5" stroke-linejoin="round" />
+
+    <!-- 7. Green Tree Canopy Circle -->
+    <circle cx="200" cy="155" r="70" fill="url(#treeGreen)" stroke="#000000" stroke-width="4" />
+    
+    <!-- 8. White Gear & Leaf -->
+    <circle cx="200" cy="148" r="32" fill="#FFFFFF" stroke="#000000" stroke-width="3" />
+    <path d="M 186 148 A 14 14 0 0 1 214 148" fill="none" stroke="#16A34A" stroke-width="5" stroke-linecap="round" />
+    <path d="M 200 134 C 190 144 200 160 200 160 C 200 160 210 144 200 134 Z" fill="#16A34A" stroke="#000000" stroke-width="1.5" />
+
+    <!-- 9. Blue Sky & Sea Section -->
+    <path d="M 96 200 C 96 200 135 183 200 183 C 265 183 304 200 304 200 L 304 326 C 304 326 200 355 200 355 C 200 355 96 326 96 326 Z" fill="url(#skyBlue)" stroke="#000000" stroke-width="3.5" />
+
+    <!-- 10. Flying Swallows (Burung Wallet) -->
+    <path d="M 122 230 Q 132 220 142 230 Q 152 220 162 230 Q 147 235 142 240 Q 137 235 122 230 Z" fill="#000000" />
+    <path d="M 238 230 Q 248 220 258 230 Q 268 220 278 230 Q 263 235 258 240 Q 253 235 238 230 Z" fill="#000000" />
+
+    <!-- 11. Pegunungan Seribu (Black Mountains) & White Sea Waves -->
+    <path d="M 96 295 Q 135 267 174 295 Q 214 257 254 295 Q 278 271 304 295 L 304 326 C 304 326 200 355 200 355 C 200 355 96 326 96 326 Z" fill="#000000" />
+    <path d="M 100 297 Q 135 271 170 297 M 170 297 Q 210 261 250 297 M 250 297 Q 276 273 300 297" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" />
+
+    <!-- White Sea Waves -->
+    <path d="M 104 318 Q 124 309 144 318 T 184 318 T 224 318 T 264 318 T 296 318" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" />
+    <path d="M 114 328 Q 134 319 154 328 T 194 328 T 234 328 T 274 328" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" />
+
+    <!-- 12. Keris / Payung Agung (Center Red Umbrella Accent) -->
+    <path d="M 200 172 L 194 285 L 206 285 Z" fill="#EA580C" stroke="#000000" stroke-width="1.5" />
+    <path d="M 200 225 L 176 256 L 224 256 Z" fill="#DC2626" stroke="#000000" stroke-width="2" stroke-linejoin="round" />
+    <path d="M 200 256 L 195 328 L 205 328 Z" fill="#FACC15" stroke="#000000" stroke-width="1.5" />
+
+    <!-- 13. Padi (Rice - Left Side) -->
+    <g fill="#FACC15" stroke="#000000" stroke-width="1.5">
+      <ellipse cx="88" cy="230" rx="7.5" ry="15" transform="rotate(-30 88 230)" />
+      <ellipse cx="82" cy="253" rx="7.5" ry="15" transform="rotate(-20 82 253)" />
+      <ellipse cx="80" cy="277" rx="7.5" ry="15" transform="rotate(-10 80 277)" />
+      <ellipse cx="82" cy="301" rx="7.5" ry="15" transform="rotate(0 82 301)" />
+    </g>
+
+    <!-- 14. Kapas (Cotton - Right Side) -->
+    <g fill="#FFFFFF" stroke="#000000" stroke-width="1.5">
+      <circle cx="312" cy="230" r="9.5" />
+      <circle cx="318" cy="253" r="9.5" />
+      <circle cx="318" cy="277" r="9.5" />
+      <circle cx="314" cy="301" r="9.5" />
+    </g>
+
+    <!-- 15. Bottom Ribbon: GUNUNG KIDUL -->
+    <g transform="translate(0, 5)">
+      <path d="M 100 348 L 200 368 L 300 348 L 316 380 L 200 406 L 84 380 Z" fill="#000000" />
+      <path d="M 104 350 L 200 370 L 296 350 L 310 378 L 200 402 L 90 378 Z" fill="url(#innerYellow)" stroke="#000000" stroke-width="1.5" />
+      <text x="200" y="388" font-family="Arial, sans-serif" font-weight="900" font-size="19" fill="#000000" text-anchor="middle" letter-spacing="2">GUNUNG KIDUL</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,197 @@
+// Prisma Schema - MEMITRAN (Membangun Kemitraan untuk Kemajuan Daerah)
+// Kepatuhan Regulasi: Permendagri No. 22 Tahun 2020 & Perda KSDPK Kab. Gunungkidul
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ------------------------------------------------------
+// ENUMS
+// ------------------------------------------------------
+
+enum InstitutionCategory {
+  DUDI_SWASTA       // Dunia Usaha dan Dunia Industri / Swasta
+  AKADEMISI         // Perguruan Tinggi / Lembaga Riset
+  KOMUNITAS_LSM     // Komunitas / Ormas / NGO / LSM
+  UMKM              // Usaha Mikro Kecil dan Menengah
+  LAINNYA           // Lembaga/Instansi lainnya
+}
+
+enum PicType {
+  PRIMARY           // PIC Utama (Penanggung Jawab Operasional)
+  SECONDARY         // PIC Pendamping (Kontak Alternatif / Legal)
+}
+
+enum ProposalSector {
+  PENDIDIKAN_SDM    // Pendidikan & Pelatihan SDM
+  KESEHATAN         // Pelayanan & Fasilitas Kesehatan
+  INFRASTRUKTUR     // Infrastruktur & Tata Ruang Daerah
+  EKONOMI_UMKM      // Pemberdayaan Ekonomi & UMKM
+  LINGKUNGAN        // Lingkungan Hidup & Energi Terbarukan
+  DIGITAL_TEKNOLOGI // Digitalisasi & Smart City
+}
+
+enum ProposalStatus {
+  VERIFICATION_FILES // Stage 1: Verifikasi Kelengkapan Berkas Administrasi TKKSD
+  REVIEW_DINAS       // Stage 2: Penelaahan Sub-Komisi TKKSD / Dinas Terkait
+  APPROVED           // Stage 3: Disetujui (Penandatanganan Naskah PKS / MoU Bupati)
+  REJECTED           // Ditolak / Perlu Perbaikan Berkas
+  MONEV_PHASE        // Stage 4: Pelaksanaan & Monitoring Evaluasi Aktif
+}
+
+enum MonevPeriod {
+  TRIWULAN_1        // Q1 (Jan - Mar)
+  TRIWULAN_2        // Q2 (Apr - Jun)
+  TRIWULAN_3        // Q3 (Jul - Sep)
+  TRIWULAN_4        // Q4 (Okt - Des)
+  TAHUNAN           // Laporan Akhir Tahun
+}
+
+enum RegulationCategory {
+  PERDA             // Peraturan Daerah
+  PERBUP_PERWALI    // Peraturan Bupati / Walikota
+  SK_BUPATI         // Keputusan Bupati / Walikota
+  JUKNIS_TKKSD      // Petunjuk Teknis & Panduan TKKSD
+}
+
+// ------------------------------------------------------
+// MODELS
+// ------------------------------------------------------
+
+/// Data Instansi / Lembaga Pengaju Kerja Sama
+model Institution {
+  id              String              @id @default(uuid())
+  name            String              // Nama Resmi Lembaga / Perusahaan
+  category        InstitutionCategory // Sektor Lembaga
+  registrationNo  String?             @unique // Nomor Izin / NIB / Akta
+  npwp            String?             // NPWP Lembaga
+  address         String              // Alamat Lengkap
+  city            String              // Kota / Kabupaten
+  province        String              // Provinsi
+  phone           String              // Telepon Kantor
+  email           String              @unique // Email Official
+  website         String?             // Website Official
+  isVerified      Boolean             @default(false)
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  // Relationships
+  pics            PicUser[]           // Wajib 2 PIC per lembaga (Permendagri 22/2020)
+  proposals       Proposal[]          // Daftar usulan proposal kerja sama
+
+  @@map("institutions")
+}
+
+/// Data Person in Charge (PIC) Resmi Lembaga (Wajib 2 PIC per Lembaga)
+model PicUser {
+  id              String      @id @default(uuid())
+  institutionId   String
+  institution     Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  
+  picType         PicType     @default(PRIMARY) // PIC Utama vs PIC Pendamping
+  fullName        String      // Nama Lengkap beserta Gelar
+  position        String      // Jabatan Struktural di Lembaga
+  phone           String      // No. WhatsApp / HP Aktif
+  email           String      // Email Pribadi/Dinas PIC
+  
+  // Digital Asset Uploads Standard TKKSD
+  pasfotoUrl      String      // URL Pasfoto Resmi 4x6 Latar Merah/Biru
+  suratTugasUrl   String      // URL Surat Tugas TKKSD Resmi dari Pimpinan Instansi
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@map("pic_users")
+}
+
+/// Detail Proposal Usulan Kerja Sama Daerah (Sesuai Check-list Permendagri No. 22 Tahun 2020)
+model Proposal {
+  id                            String          @id @default(uuid())
+  institutionId                 String
+  institution                   Institution     @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+
+  registrationCode              String          @unique // e.g., "PRP-202608-001"
+  title                         String          // Judul Usulan Kerja Sama
+  sector                        ProposalSector  // Sektor Fokus Kerja Sama
+  description                   String          @db.Text // Ringkasan Latar Belakang & Tujuan
+  targetLocation                String          // Lokasi Pelaksanaan Kerja Sama
+  budgetEstimate                Decimal         @db.Decimal(15, 2) // Estimasi Nilai Kerja Sama / Investasi (Rp)
+  durationMonths                Int             @default(12) // Durasi Rencana Kerja Sama (Bulan)
+  status                        ProposalStatus  @default(VERIFICATION_FILES)
+
+  // Document Uploads Compliance Checklist (Permendagri 22/2020 & Perda KSDPK)
+  documentSuratPermohonanUrl    String          // 1. Surat Permohonan / Letter of Intent (LoI) Resmi Bupati (PDF)
+  documentProposalUrl           String          // 2. Naskah Proposal Kerja Sama Lengkap (PDF)
+  documentLegalUrl              String          // 3. Berkas Legalitas (NIB / SK Kemenkumham / Akta / NPWP) (PDF)
+  documentSuratBebasSengketaUrl String          // 4. Surat Pernyataan Bebas Sengketa Hukum Bermaterai (PDF)
+  documentMouUrl                String?         // 5. Draft Naskah Kesepakatan Bersama (MoU / PKS) (PDF)
+  documentLaporanKeuanganUrl    String?         // 6. Laporan Keuangan / Audit Track Record (PDF, Opsional)
+
+  submittedAt                   DateTime        @default(now())
+  updatedAt                     DateTime        @updatedAt
+
+  // Relationships
+  logs                          ProposalLog[]   // Audit Trail Riwayat Verifikasi
+  monevReports                  Monev[]         // Data Monitoring & Evaluasi
+
+  @@map("proposals")
+}
+
+/// Histori & Audit Log Riwayat Status Proposal
+model ProposalLog {
+  id          String         @id @default(uuid())
+  proposalId  String
+  proposal    Proposal       @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  status      ProposalStatus // Status pada tahapan log ini
+  actorName   String         // Nama Verifikator / Tim TKKSD / Staff Setda
+  actorRole   String         // Jabatan / Instansi Verifikator (misal: "Staff Sekretariat TKKSD Setda")
+  comment     String         @db.Text // Catatan Review / Alasan Rekomendasi / Perbaikan
+  createdAt   DateTime       @default(now())
+
+  @@map("proposal_logs")
+}
+
+/// Katalog Peraturan & Regulasi Kerja Sama Daerah
+model Regulation {
+  id          String             @id @default(uuid())
+  number      String             // Nomor Peraturan (misal: "Permendagri No. 22 Tahun 2020")
+  year        Int                // Tahun Penerbitan
+  title       String             // Judul Peraturan
+  category    RegulationCategory // Perda / Perbup / Juknis
+  description String             @db.Text // Abstraksi / Penjelasan Peraturan
+  fileUrl     String             // URL Berkas Peraturan (PDF)
+  publishedAt DateTime
+  isPublished Boolean            @default(true)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@map("regulations")
+}
+
+/// Laporan Monitoring dan Evaluasi (Monev) Kerja Sama Aktif
+model Monev {
+  id                  String      @id @default(uuid())
+  proposalId          String
+  proposal            Proposal    @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  period              MonevPeriod // Triwulan / Tahunan
+  progressPercentage  Float       // Persentase Capaian (%)
+  indicator           String      // Indikator Kinerja Utama (IKU) Kerja Sama
+  achievementDetails  String      @db.Text // Realisasi Program & Hasil Lapangan
+  obstacle            String?     @db.Text // Kendala yang Dihadapi
+  solution            String?     @db.Text // Tindak Lanjut Solusi
+  reportFileUrl       String?     // File Laporan Lapangan & Foto Kegiatan (PDF/ZIP)
+
+  evaluatedBy         String      // Nama Auditor / Tim Monev TKKSD
+  evaluatedAt         DateTime    @default(now())
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  @@map("monev_reports")
+}
