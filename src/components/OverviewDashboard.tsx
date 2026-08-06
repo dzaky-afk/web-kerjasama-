@@ -619,17 +619,17 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         })}
       </div>
 
-      {/* DETAILED INFORMATION MODAL POPUP - PERFECT OVERFLOW & SCROLLBAR DESIGN */}
+      {/* DETAILED INFORMATION MODAL POPUP - PERFECT OVERFLOW & CENTERING */}
       {selectedThemeModal && (
         <div 
           onClick={() => setSelectedThemeModal(null)}
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in overflow-y-auto"
         >
           
-          {/* Main Card Wrapper - STRICT OVERFLOW HIDDEN + FLEX COL */}
+          {/* Main Card Wrapper - STRICT OVERFLOW HIDDEN + FLEX COL + PERFECT CENTER */}
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="max-w-3xl w-full max-h-[90vh] flex flex-col bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden relative animate-scale-up my-auto"
+            className="max-w-3xl w-full max-h-[85vh] flex flex-col bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden relative animate-scale-up"
           >
             
             {/* Header Banner - Fixed at Top */}
