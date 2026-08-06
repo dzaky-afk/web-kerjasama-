@@ -63,6 +63,21 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 }) => {
   const [selectedThemeModal, setSelectedThemeModal] = useState<CooperationTheme | null>(null);
 
+  // ESC Key listener to close modal smoothly
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedThemeModal(null);
+      }
+    };
+    if (selectedThemeModal) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedThemeModal]);
+
   // Stacked Section Cards Data for Gunungkidul Regional Cooperation
   const cooperationThemes: CooperationTheme[] = [
     {
@@ -473,9 +488,9 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 
       {/* SECTION HEADER FOR STACKED CARDS */}
       <div className="text-center max-w-2xl mx-auto space-y-2 pt-4">
-        <div className="inline-flex items-center space-x-1.5 bg-amber-100 text-amber-900 px-3 py-1 rounded-full text-xs font-extrabold border border-amber-300">
+        <div className="inline-flex items-center space-x-1.5 bg-amber-100 text-amber-900 px-3.5 py-1 rounded-full text-xs font-extrabold border border-amber-300">
           <Layers className="w-3.5 h-3.5 text-amber-600" />
-          <span>EKSPLORASI TEMA KERJA SAMA (STACKED SCROLL)</span>
+          <span>TEMA KERJA SAMA DAERAH STRATEGIS</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
           Fokus & Bidang Kerja Sama Kabupaten Gunungkidul
@@ -606,10 +621,16 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 
       {/* DETAILED INFORMATION MODAL POPUP - PERFECT OVERFLOW & SCROLLBAR DESIGN */}
       {selectedThemeModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in">
+        <div 
+          onClick={() => setSelectedThemeModal(null)}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in"
+        >
           
           {/* Main Card Wrapper - STRICT OVERFLOW HIDDEN + FLEX COL */}
-          <div className="max-w-3xl w-full max-h-[90vh] flex flex-col bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden relative animate-scale-up my-auto">
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-3xl w-full max-h-[90vh] flex flex-col bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden relative animate-scale-up my-auto"
+          >
             
             {/* Header Banner - Fixed at Top */}
             <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white p-6 sm:p-8 relative shrink-0">
@@ -745,6 +766,28 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                   </ul>
                 </div>
 
+              </div>
+
+              {/* 5. Bentuk Kegiatan & Program Kerja Utama */}
+              <div className="bg-white border border-slate-200 p-5 rounded-2xl space-y-3 shadow-xs">
+                <div className="flex items-center space-x-2 border-b border-slate-100 pb-2">
+                  <div className="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
+                    <Activity className="w-4 h-4 text-indigo-600" />
+                  </div>
+                  <h4 className="font-extrabold text-slate-900 text-xs">
+                    Bentuk Kegiatan & Program Kerja Utama
+                  </h4>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[11px]">
+                  {selectedThemeModal.details.activities.map((act, aIdx) => (
+                    <div key={aIdx} className="bg-indigo-50/60 p-3 rounded-xl border border-indigo-100 flex items-start gap-2.5">
+                      <span className="bg-indigo-600 text-white font-mono font-black px-1.5 py-0.5 rounded text-[9px] shrink-0">
+                        #{aIdx + 1}
+                      </span>
+                      <span className="text-slate-800 font-medium leading-relaxed">{act}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Dokumen Persyaratan & Prosedur Submit */}
