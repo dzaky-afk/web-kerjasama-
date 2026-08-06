@@ -51,11 +51,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               setActiveTab(item.id);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition duration-200 cursor-pointer relative ${
-              isActive ? 'text-amber-600 font-extrabold' : 'text-slate-500 hover:text-slate-900 font-medium'
+            className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition-all duration-300 transform active:scale-90 cursor-pointer relative ${
+              isActive ? 'text-amber-600 font-extrabold scale-105' : 'text-slate-500 hover:text-slate-900 font-medium'
             }`}
           >
-            <div className={`p-1 rounded-xl transition relative ${isActive ? 'bg-amber-100/80 text-amber-700' : ''}`}>
+            <div className={`p-1 rounded-xl transition-all duration-300 relative ${isActive ? 'bg-amber-100/90 text-amber-700 shadow-xs' : ''}`}>
               <Icon className="w-5 h-5" />
               {isApprovalTab && pendingApprovalCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center animate-pulse border border-white shadow-xs">
