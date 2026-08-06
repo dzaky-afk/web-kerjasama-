@@ -22,7 +22,6 @@ import {
   X,
   FileText,
   PhoneCall,
-  Check,
   Building,
   ChevronRight
 } from 'lucide-react';
@@ -46,7 +45,6 @@ interface CooperationTheme {
   description: string;
   highlights: { label: string; detail: string }[];
   metrics: { title: string; value: string; icon: any };
-  // Extended Detail Information
   details: {
     legalBasis: string[];
     activePartners: string[];
@@ -99,7 +97,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         ],
         priorityLocations: [
           'Kapanewon Semanu (Fasilitas Pompa Air Karst Bribin)',
-          'Kapanewon Ponjong & Karangmojo (Kawasan Pertanian Pangan Lahan Kering)',
+          'Kapanewon Ponjong & Karangmojo (Pertanian Pangan Lahan Kering)',
           'Kapanewon Girisubo & Rongkop (Perbatasan Pacitan - Jateng)',
           'Kapanewon Patuk (Gerbang Pintu Masuk Pariwisata DIY)'
         ],
@@ -154,7 +152,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         ],
         priorityLocations: [
           'Kapanewon Tanjungsari & Tepus (Kawasan Destinasi Pantai Selatan)',
-          'Kapanewon Panggang & Purwosari (Kawasan Investasi Pariwisata Karst)',
+          'Kapanewon Panggang & Purwosari (Investasi Pariwisata Karst)',
           'Kapanewon Nglipar & Playen (Kawasan Pertanian & Kehutanan)',
           'Kapanewon Wonosari (Pusat Sentra Kuliner & UMKM)'
         ],
@@ -264,10 +262,10 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
           'Himpunan Pramuwisata Indonesia (HPI) Cabang Gunungkidul'
         ],
         priorityLocations: [
-          'Kalurahan Bobung Kapanewon Nglipar (Sentra Kerajinan Batik Kayu)',
-          'Kalurahan Nglanggeran Kapanewon Patuk (Desa Wisata Terbaik UNWTO)',
-          'Kalurahan Bleberan Kapanewon Playen (Sentra Wisata Air Sri Gethuk)',
-          'Kalurahan Tepus & Purwosari (Sentra Olahan Pangan & Homestay)'
+          'Kalurahan Bobung Kapanewon Nglipar (Sentra Batik Kayu)',
+          'Kalurahan Nglanggeran Kapanewon Patuk (Desa Wisata UNWTO)',
+          'Kalurahan Bleberan Kapanewon Playen (Wisata Sri Gethuk)',
+          'Kalurahan Tepus & Purwosari (Olahan Pangan & Homestay)'
         ],
         activities: [
           'Bimbingan Teknis Digital Marketing & Onboarding E-Commerce Tokopedia/Shopee.',
@@ -294,7 +292,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
   return (
     <div className="space-y-10 animate-fade-in relative pb-12">
       
-      {/* SMARTPHONE MOBILE DASHBOARD QUICK ACCESS CARDS */}
+      {/* SMARTPHONE MOBILE QUICK ACCESS CARDS */}
       <div className="md:hidden space-y-4">
         <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 text-white rounded-2xl p-4 shadow-lg flex items-center justify-between">
           <div>
@@ -517,7 +515,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                 {/* Card Header & Badge */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10 border-b border-slate-200 pb-5">
                   <div className="flex items-center space-x-3.5 cursor-pointer" onClick={() => setSelectedThemeModal(theme)}>
-                    <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold shadow-md shrink-0">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center font-bold shadow-md shrink-0 border border-white/20">
                       <Icon className="w-6 h-6" />
                     </div>
                     <div>
@@ -536,7 +534,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                     </span>
                     <button
                       onClick={() => setSelectedThemeModal(theme)}
-                      className="px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-xs transition cursor-pointer"
+                      className="px-3.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-xl text-xs font-extrabold flex items-center space-x-1.5 shadow-xs transition cursor-pointer"
                     >
                       <Info className="w-3.5 h-3.5 text-amber-700" />
                       <span>Lihat Informasi Detail</span>
@@ -545,7 +543,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                 </div>
 
                 {/* Description Body */}
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed relative z-10 font-normal">
+                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed relative z-10 font-medium">
                   {theme.description}
                 </p>
 
@@ -555,7 +553,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                     <div 
                       key={hIdx} 
                       onClick={() => setSelectedThemeModal(theme)}
-                      className="bg-white/80 border border-slate-200/80 p-4 rounded-2xl space-y-1.5 shadow-xs hover:border-amber-400 transition cursor-pointer group"
+                      className="bg-white/90 border border-slate-200/90 p-4 rounded-2xl space-y-1.5 shadow-xs hover:border-amber-400 transition cursor-pointer group"
                     >
                       <div className="flex items-center justify-between text-slate-900 font-bold text-xs">
                         <span className="flex items-center gap-1.5">
@@ -606,153 +604,189 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         })}
       </div>
 
-      {/* DETAILED INFORMATION MODAL POPUP */}
+      {/* DETAILED INFORMATION MODAL POPUP - PREMIUM REFINED DESIGN */}
       {selectedThemeModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md animate-fade-in overflow-y-auto">
-          <div className="max-w-3xl w-full max-h-[90vh] overflow-y-auto glass-panel bg-white/98 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl border border-amber-500/40 relative animate-scale-up my-auto">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-lg animate-fade-in overflow-y-auto">
+          <div className="max-w-3xl w-full max-h-[92vh] overflow-y-auto bg-white rounded-3xl shadow-2xl border border-slate-200 relative animate-scale-up my-auto no-scrollbar overflow-hidden">
             
-            {/* Modal Header */}
-            <div className="flex items-start justify-between border-b border-slate-200 pb-4 relative z-10">
-              <div className="flex items-center space-x-4">
-                <div className="w-14 h-14 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold shadow-lg shrink-0">
-                  {React.createElement(selectedThemeModal.icon, { className: "w-7 h-7" })}
-                </div>
-                <div>
-                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black border ${selectedThemeModal.badgeBg}`}>
-                    {selectedThemeModal.badge}
-                  </span>
-                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight pt-1">
-                    {selectedThemeModal.title}
-                  </h3>
-                  <p className="text-xs font-medium text-amber-800">
-                    {selectedThemeModal.subtitle}
-                  </p>
-                </div>
-              </div>
+            {/* Premium Header Banner */}
+            <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white p-6 sm:p-8 rounded-t-3xl relative overflow-hidden shadow-md">
+              {/* Background Light Pattern Blobs */}
+              <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-amber-400/20 rounded-full blur-xl pointer-events-none" />
 
-              <button 
-                onClick={() => setSelectedThemeModal(null)}
-                className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl transition cursor-pointer shrink-0"
-                title="Tutup Modal"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Description Overview */}
-            <div className="bg-amber-50/60 border border-amber-200/80 p-4 rounded-2xl space-y-1">
-              <h4 className="text-xs font-extrabold text-amber-900 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-amber-600" />
-                <span>Deskripsi & Latar Belakang Kemitraan</span>
-              </h4>
-              <p className="text-xs text-slate-700 leading-relaxed font-normal">
-                {selectedThemeModal.description}
-              </p>
-            </div>
-
-            {/* Grid 2 Column Detail Info */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
-              
-              {/* Dasar & Payung Hukum */}
-              <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2">
-                <h4 className="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs border-b border-slate-200 pb-1.5">
-                  <FileText className="w-4 h-4 text-amber-600" />
-                  <span>Dasar Regulasi & Payung Hukum</span>
-                </h4>
-                <ul className="space-y-1.5 pr-1">
-                  {selectedThemeModal.details.legalBasis.map((legal, lIdx) => (
-                    <li key={lIdx} className="flex items-start gap-1.5 text-slate-700 text-[11px] leading-snug">
-                      <Check className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
-                      <span>{legal}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Mitra & Instansi Terlibat */}
-              <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2">
-                <h4 className="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs border-b border-slate-200 pb-1.5">
-                  <Building className="w-4 h-4 text-emerald-600" />
-                  <span>Mitra Strategis & Lembaga Terlibat</span>
-                </h4>
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {selectedThemeModal.details.activePartners.map((partner, pIdx) => (
-                    <span 
-                      key={pIdx} 
-                      className="bg-white border border-slate-200 text-slate-800 px-2 py-1 rounded-lg text-[10px] font-bold shadow-2xs"
-                    >
-                      {partner}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Wilayah & Kapanewon Prioritas */}
-              <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2">
-                <h4 className="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs border-b border-slate-200 pb-1.5">
-                  <MapPin className="w-4 h-4 text-sky-600" />
-                  <span>Lokasi & Kapanewon Prioritas</span>
-                </h4>
-                <ul className="space-y-1 text-slate-700 text-[11px]">
-                  {selectedThemeModal.details.priorityLocations.map((loc, locIdx) => (
-                    <li key={locIdx} className="flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
-                      <span>{loc}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Dampak & Outpu Hasil */}
-              <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2">
-                <h4 className="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs border-b border-slate-200 pb-1.5">
-                  <Award className="w-4 h-4 text-orange-600" />
-                  <span>Dampak & Capaian Kemitraan</span>
-                </h4>
-                <ul className="space-y-1.5 text-slate-700 text-[11px]">
-                  {selectedThemeModal.details.expectedImpact.map((imp, impIdx) => (
-                    <li key={impIdx} className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                      <span>{imp}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-            </div>
-
-            {/* Dokumen Persyaratan & Prosedur Submit */}
-            <div className="bg-amber-50/50 border border-amber-300 p-4 rounded-2xl space-y-3">
-              <h4 className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
-                <FileCheck2 className="w-4 h-4 text-amber-600" />
-                <span>Checklist Dokumen Persyaratan PDF (Permendagri No. 22/2020)</span>
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
-                {selectedThemeModal.details.requiredDocs.map((doc, dIdx) => (
-                  <div key={dIdx} className="bg-white p-2.5 rounded-xl border border-amber-200 flex items-start gap-2 shadow-2xs">
-                    <span className="bg-amber-100 text-amber-900 font-bold px-1.5 py-0.5 rounded text-[9px] shrink-0 font-mono">
-                      Doc #{dIdx + 1}
-                    </span>
-                    <span className="text-slate-800 font-medium">{doc}</span>
+              <div className="flex items-start justify-between relative z-10 gap-4">
+                <div className="flex items-center space-x-4">
+                  <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md text-white flex items-center justify-center font-bold shadow-lg shrink-0 border border-white/30">
+                    {React.createElement(selectedThemeModal.icon, { className: "w-7 h-7" })}
                   </div>
-                ))}
+                  <div>
+                    <span className="inline-block bg-white/20 backdrop-blur-md text-white border border-white/40 px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider">
+                      {selectedThemeModal.badge}
+                    </span>
+                    <h3 className="text-xl sm:text-2xl font-black text-white leading-tight pt-1 tracking-tight">
+                      {selectedThemeModal.title}
+                    </h3>
+                    <p className="text-xs text-amber-100 font-medium pt-0.5 opacity-95">
+                      {selectedThemeModal.subtitle}
+                    </p>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={() => setSelectedThemeModal(null)}
+                  className="p-2 bg-white/20 hover:bg-white/30 text-white rounded-full transition cursor-pointer shrink-0 backdrop-blur-md border border-white/20"
+                  title="Tutup Modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
             </div>
 
-            {/* Contact Person Sekretariat TKKSD */}
-            <div className="bg-slate-900 text-white p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-              <div className="flex items-center space-x-2">
-                <PhoneCall className="w-5 h-5 text-amber-400 shrink-0" />
-                <div>
-                  <span className="text-[10px] text-amber-400 font-bold block">Kontak Sekretariat TKKSD Gunungkidul</span>
-                  <p className="text-[11px] opacity-90 font-medium">{selectedThemeModal.details.contactSubKomisi}</p>
+            {/* Modal Body Content */}
+            <div className="p-6 sm:p-8 space-y-6 bg-slate-50/50">
+              
+              {/* Description Box */}
+              <div className="bg-amber-50/80 border border-amber-200 p-4 sm:p-5 rounded-2xl space-y-2 shadow-xs">
+                <h4 className="text-xs font-black text-amber-900 flex items-center gap-2 uppercase tracking-wide">
+                  <Sparkles className="w-4 h-4 text-amber-600" />
+                  <span>Deskripsi & Gambaran Umum Kemitraan</span>
+                </h4>
+                <p className="text-xs text-slate-700 leading-relaxed font-medium">
+                  {selectedThemeModal.description}
+                </p>
+              </div>
+
+              {/* Grid 2 Columns for Info Sections */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                
+                {/* 1. Dasar Regulasi & Payung Hukum */}
+                <div className="bg-white border border-slate-200 p-5 rounded-2xl space-y-3 shadow-xs hover:border-amber-400 transition">
+                  <div className="flex items-center space-x-2 border-b border-slate-100 pb-2.5">
+                    <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold">
+                      <FileText className="w-4 h-4" />
+                    </div>
+                    <h4 className="font-extrabold text-slate-900 text-xs">
+                      Dasar Regulasi & Payung Hukum
+                    </h4>
+                  </div>
+                  <ul className="space-y-2">
+                    {selectedThemeModal.details.legalBasis.map((legal, lIdx) => (
+                      <li key={lIdx} className="flex items-start gap-2 text-slate-700 text-[11px] leading-relaxed">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
+                        <span className="font-medium">{legal}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* 2. Mitra Strategis & Lembaga Terlibat */}
+                <div className="bg-white border border-slate-200 p-5 rounded-2xl space-y-3 shadow-xs hover:border-emerald-400 transition">
+                  <div className="flex items-center space-x-2 border-b border-slate-100 pb-2.5">
+                    <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+                      <Building className="w-4 h-4" />
+                    </div>
+                    <h4 className="font-extrabold text-slate-900 text-xs">
+                      Mitra Strategis & Lembaga Terlibat
+                    </h4>
+                  </div>
+                  <div className="flex flex-wrap gap-2 pt-0.5">
+                    {selectedThemeModal.details.activePartners.map((partner, pIdx) => (
+                      <span 
+                        key={pIdx} 
+                        className="bg-emerald-50 text-emerald-900 border border-emerald-200 px-2.5 py-1 rounded-xl text-[10px] font-extrabold flex items-center gap-1 shadow-2xs"
+                      >
+                        <Building2 className="w-3 h-3 text-emerald-600" />
+                        {partner}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 3. Lokasi & Kapanewon Prioritas */}
+                <div className="bg-white border border-slate-200 p-5 rounded-2xl space-y-3 shadow-xs hover:border-sky-400 transition">
+                  <div className="flex items-center space-x-2 border-b border-slate-100 pb-2.5">
+                    <div className="w-7 h-7 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center font-bold">
+                      <MapPin className="w-4 h-4" />
+                    </div>
+                    <h4 className="font-extrabold text-slate-900 text-xs">
+                      Lokasi & Kapanewon Prioritas
+                    </h4>
+                  </div>
+                  <ul className="space-y-2 text-slate-700 text-[11px]">
+                    {selectedThemeModal.details.priorityLocations.map((loc, locIdx) => (
+                      <li key={locIdx} className="flex items-center gap-2 bg-sky-50/60 p-2 rounded-xl border border-sky-100">
+                        <span className="w-2 h-2 rounded-full bg-sky-500 shrink-0" />
+                        <span className="font-medium text-slate-800">{loc}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* 4. Dampak & Capaian Kemitraan */}
+                <div className="bg-white border border-slate-200 p-5 rounded-2xl space-y-3 shadow-xs hover:border-orange-400 transition">
+                  <div className="flex items-center space-x-2 border-b border-slate-100 pb-2.5">
+                    <div className="w-7 h-7 rounded-lg bg-orange-100 text-orange-700 flex items-center justify-center font-bold">
+                      <Award className="w-4 h-4" />
+                    </div>
+                    <h4 className="font-extrabold text-slate-900 text-xs">
+                      Dampak & Target Hasil
+                    </h4>
+                  </div>
+                  <ul className="space-y-2 text-slate-700 text-[11px]">
+                    {selectedThemeModal.details.expectedImpact.map((imp, impIdx) => (
+                      <li key={impIdx} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                        <span className="font-medium">{imp}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+              </div>
+
+              {/* Dokumen Persyaratan & Prosedur Submit */}
+              <div className="bg-white border border-amber-300 p-5 rounded-2xl space-y-3 shadow-xs">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <h4 className="text-xs font-black text-slate-900 flex items-center gap-2">
+                    <FileCheck2 className="w-4 h-4 text-amber-600" />
+                    <span>Checklist Dokumen Syarat PDF (Permendagri No. 22/2020)</span>
+                  </h4>
+                  <span className="text-[10px] bg-amber-100 text-amber-900 font-extrabold px-2 py-0.5 rounded">
+                    Wajib Upload PDF
+                  </span>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[11px]">
+                  {selectedThemeModal.details.requiredDocs.map((doc, dIdx) => (
+                    <div key={dIdx} className="bg-amber-50/60 p-3 rounded-xl border border-amber-200/80 flex items-start gap-2.5 shadow-2xs">
+                      <span className="bg-amber-500 text-white font-mono font-black px-1.5 py-0.5 rounded text-[9px] shrink-0">
+                        DOC #{dIdx + 1}
+                      </span>
+                      <span className="text-slate-800 font-medium">{doc}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="flex items-center space-x-2 shrink-0">
+            </div>
+
+            {/* Premium Dark Footer */}
+            <div className="bg-slate-950 text-white p-5 sm:p-6 rounded-b-3xl flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-800">
+              <div className="flex items-center space-x-3">
+                <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold shrink-0 border border-amber-400/30">
+                  <PhoneCall className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider block">Kontak Layanan TKKSD Gunungkidul</span>
+                  <p className="text-[11px] opacity-90 font-medium text-slate-300">{selectedThemeModal.details.contactSubKomisi}</p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-3 shrink-0">
                 <button
                   onClick={() => setSelectedThemeModal(null)}
-                  className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold cursor-pointer transition"
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-bold cursor-pointer transition text-xs border border-slate-700"
                 >
                   Tutup
                 </button>
@@ -761,9 +795,10 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                     setSelectedThemeModal(null);
                     onNavigateTab('proposal');
                   }}
-                  className="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold rounded-xl shadow-md cursor-pointer transition flex items-center gap-1"
+                  className="px-5 py-2 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold text-xs rounded-xl shadow-lg cursor-pointer transition flex items-center gap-1.5 border border-amber-300/40 active:scale-95"
                 >
-                  <span>Ajukan Proposal Now &rarr;</span>
+                  <span>Ajukan Proposal Sekarang</span>
+                  <ArrowUpRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
