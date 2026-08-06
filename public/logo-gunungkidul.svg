@@ -40,20 +40,23 @@
     <!-- Yellow Fill -->
     <path d="M 70 140 C 70 78 131 63 200 63 C 269 63 330 78 330 140 C 330 286 330 324 330 324 C 330 360 200 404 200 404 C 200 404 70 360 70 324 Z" fill="url(#innerYellow)" />
 
-    <!-- 5. Top Ribbon: DHAKSINARGA BHUMIKARTA -->
-    <g transform="translate(0, 5)">
-      <path d="M 90 140 C 130 90 270 90 310 140 L 328 128 C 278 72 122 72 72 128 Z" fill="#000000" />
-      <path d="M 94 138 C 132 92 268 92 306 138 L 322 129 C 274 75 126 75 78 129 Z" fill="#FFFFFF" />
+    <!-- 5. Top Ribbon: DHAKSINARGA BHUMIKARTA (Refined Curved Text Layout) -->
+    <g id="TopRibbonGroup">
+      <!-- Black Outer Border Ribbon -->
+      <path d="M 82 138 C 124 82 276 82 318 138 L 332 124 C 280 62 120 62 68 124 Z" fill="#000000" />
+      <!-- White Ribbon Body -->
+      <path d="M 86 136 C 126 85 274 85 314 136 L 326 125 C 277 66 123 66 74 125 Z" fill="#FFFFFF" />
       
-      <!-- Curved Text Paths -->
-      <path id="leftArc" d="M 92 135 C 128 95 190 95 190 95" fill="none" />
-      <path id="rightArc" d="M 210 95 C 210 95 272 95 308 135" fill="none" />
+      <!-- High Precision Curved Text Arc Paths -->
+      <path id="leftArc" d="M 88 127 C 124 93 186 93 186 93" fill="none" />
+      <path id="rightArc" d="M 214 93 C 214 93 276 93 312 127" fill="none" />
 
-      <text font-family="Arial, sans-serif" font-weight="900" font-size="11.5" fill="#000000" letter-spacing="0.5">
-        <textPath href="#leftArc" startOffset="8%">DHAKSINARGA</textPath>
+      <!-- High Contrast Bold Curved Typography -->
+      <text font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-weight="900" font-size="10.5" fill="#000000" letter-spacing="0.6">
+        <textPath href="#leftArc" startOffset="50%" text-anchor="middle">DHAKSINARGA</textPath>
       </text>
-      <text font-family="Arial, sans-serif" font-weight="900" font-size="11.5" fill="#000000" letter-spacing="0.5">
-        <textPath href="#rightArc" startOffset="10%">BHUMIKARTA</textPath>
+      <text font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-weight="900" font-size="10.5" fill="#000000" letter-spacing="0.6">
+        <textPath href="#rightArc" startOffset="50%" text-anchor="middle">BHUMIKARTA</textPath>
       </text>
     </g>
 
@@ -104,11 +107,11 @@
       <circle cx="314" cy="301" r="9.5" />
     </g>
 
-    <!-- 15. Bottom Ribbon: GUNUNG KIDUL -->
-    <g transform="translate(0, 5)">
-      <path d="M 100 348 L 200 368 L 300 348 L 316 380 L 200 406 L 84 380 Z" fill="#000000" />
-      <path d="M 104 350 L 200 370 L 296 350 L 310 378 L 200 402 L 90 378 Z" fill="url(#innerYellow)" stroke="#000000" stroke-width="1.5" />
-      <text x="200" y="388" font-family="Arial, sans-serif" font-weight="900" font-size="19" fill="#000000" text-anchor="middle" letter-spacing="2">GUNUNG KIDUL</text>
+    <!-- 15. Bottom Ribbon: GUNUNG KIDUL (Clean Bold Centered Typography) -->
+    <g id="BottomRibbonGroup">
+      <path d="M 98 348 L 200 368 L 302 348 L 318 376 L 200 404 L 82 376 Z" fill="#000000" />
+      <path d="M 102 350 L 200 370 L 298 350 L 312 374 L 200 398 L 88 374 Z" fill="url(#innerYellow)" stroke="#000000" stroke-width="1.5" />
+      <text x="200" y="384" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-weight="900" font-size="15.5" fill="#000000" text-anchor="middle" letter-spacing="2.5">GUNUNG KIDUL</text>
     </g>
   </g>
 </svg>
