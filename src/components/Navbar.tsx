@@ -95,10 +95,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer relative ${
+                  className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all duration-300 transform active:scale-95 cursor-pointer relative ${
                     isActive
-                      ? 'glass-button-primary text-white shadow-md'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
+                      ? 'glass-button-primary text-white shadow-md scale-[1.02]'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 hover:scale-[1.02]'
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5 shrink-0" />

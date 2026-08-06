@@ -44,6 +44,11 @@ export function App() {
   const [regulations, setRegulations] = useState<Regulation[]>([]);
   const [isLoadingDb, setIsLoadingDb] = useState<boolean>(true);
 
+  // Smooth scroll to top when activeTab changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [activeTab]);
+
   // Fetch Database Initial Data on Load
   useEffect(() => {
     async function loadDatabaseData() {
@@ -162,54 +167,56 @@ export function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
-        
-        {/* DEDICATED STAFF SETDA / TKKSD APPROVAL PORTAL */}
-        {activeTab === 'setda_admin' && currentUser.role === 'TKKSD_ADMIN' && (
-          <SetdaAdminDashboard
-            user={currentUser}
-            proposals={proposals}
-            onUpdateProposal={handleUpdateProposal}
-          />
-        )}
+        <div key={activeTab} className="animate-tab-switch">
+          
+          {/* DEDICATED STAFF SETDA / TKKSD APPROVAL PORTAL */}
+          {activeTab === 'setda_admin' && currentUser.role === 'TKKSD_ADMIN' && (
+            <SetdaAdminDashboard
+              user={currentUser}
+              proposals={proposals}
+              onUpdateProposal={handleUpdateProposal}
+            />
+          )}
 
-        {/* OVERVIEW HERO & STACKED CARDS DASHBOARD SECTION */}
-        {activeTab === 'overview' && (
-          <OverviewDashboard
-            user={currentUser}
-            onNavigateTab={setActiveTab}
-            pendingApprovalCount={pendingApprovalCount}
-          />
-        )}
+          {/* OVERVIEW HERO & STACKED CARDS DASHBOARD SECTION */}
+          {activeTab === 'overview' && (
+            <OverviewDashboard
+              user={currentUser}
+              onNavigateTab={setActiveTab}
+              pendingApprovalCount={pendingApprovalCount}
+            />
+          )}
 
-        {/* REGISTRATION FORM VIEW */}
-        {activeTab === 'registration' && (
-          <RegistrationMultiStepForm onSuccess={handleRegisterSuccess} onNavigateTab={setActiveTab} />
-        )}
+          {/* REGISTRATION FORM VIEW */}
+          {activeTab === 'registration' && (
+            <RegistrationMultiStepForm onSuccess={handleRegisterSuccess} onNavigateTab={setActiveTab} />
+          )}
 
-        {/* PROPOSAL SUBMISSION VIEW */}
-        {activeTab === 'proposal' && (
-          <ProposalSubmissionForm
-            registeredInstitutions={institutions}
-            onSubmitSuccess={handleProposalSubmitSuccess}
-          />
-        )}
+          {/* PROPOSAL SUBMISSION VIEW */}
+          {activeTab === 'proposal' && (
+            <ProposalSubmissionForm
+              registeredInstitutions={institutions}
+              onSubmitSuccess={handleProposalSubmitSuccess}
+            />
+          )}
 
-        {/* TRACKING & MONEV DASHBOARD VIEW */}
-        {activeTab === 'tracking' && (
-          <TrackingMonevDashboard
-            proposals={proposals}
-            onUpdateProposal={handleUpdateProposal}
-          />
-        )}
+          {/* TRACKING & MONEV DASHBOARD VIEW */}
+          {activeTab === 'tracking' && (
+            <TrackingMonevDashboard
+              proposals={proposals}
+              onUpdateProposal={handleUpdateProposal}
+            />
+          )}
 
-        {/* REGULATION & DATABASE CATALOG VIEW */}
-        {activeTab === 'regulations' && (
-          <RegulationDatabasePage
-            regulations={regulations}
-            activeProposals={proposals.filter(p => p.status === 'APPROVED' || p.status === 'MONEV_PHASE')}
-          />
-        )}
+          {/* REGULATION & DATABASE CATALOG VIEW */}
+          {activeTab === 'regulations' && (
+            <RegulationDatabasePage
+              regulations={regulations}
+              activeProposals={proposals.filter(p => p.status === 'APPROVED' || p.status === 'MONEV_PHASE')}
+            />
+          )}
 
+        </div>
       </main>
 
       {/* Footer */}
