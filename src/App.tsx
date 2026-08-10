@@ -226,13 +226,13 @@ export function App() {
             />
           )}
 
-          {/* REGISTRATION FORM VIEW */}
-          {activeTab === 'registration' && (
+          {/* REGISTRATION FORM VIEW (MITRA ONLY) */}
+          {activeTab === 'registration' && currentUser.role !== 'TKKSD_ADMIN' && (
             <RegistrationMultiStepForm onSuccess={handleRegisterSuccess} onNavigateTab={setActiveTab} />
           )}
 
-          {/* PROPOSAL SUBMISSION VIEW */}
-          {activeTab === 'proposal' && (
+          {/* PROPOSAL SUBMISSION VIEW (MITRA ONLY) */}
+          {activeTab === 'proposal' && currentUser.role !== 'TKKSD_ADMIN' && (
             <ProposalSubmissionForm
               registeredInstitutions={institutions}
               onSubmitSuccess={handleProposalSubmitSuccess}

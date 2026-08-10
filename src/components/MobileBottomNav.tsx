@@ -33,7 +33,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   const navItems = user?.role === 'TKKSD_ADMIN' 
     ? [
         { id: 'setda_admin' as const, label: 'ACC Setda', icon: CheckSquare },
-        ...baseNavItems.filter(i => i.id !== 'registration')
+        ...baseNavItems.filter(i => i.id !== 'registration' && i.id !== 'proposal')
       ]
     : baseNavItems;
 

@@ -44,11 +44,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'regulations', label: 'Katalog Regulasi', icon: BookOpen }
   ];
 
-  // If user is Staff Setda / TKKSD Admin, add dedicated Approval Portal tab
+  // If user is Staff Setda / TKKSD Admin, add dedicated Approval Portal tab and hide registration/proposal tabs
   const navItems = user?.role === 'TKKSD_ADMIN' 
     ? [
         { id: 'setda_admin' as const, label: 'ACC Setda', icon: CheckSquare },
-        ...baseNavItems
+        ...baseNavItems.filter(item => item.id !== 'registration' && item.id !== 'proposal')
       ]
     : baseNavItems;
 
@@ -170,7 +170,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                                 Terdapat {pendingApprovalCount} usulan kerja sama baru yang membutuhkan verifikasi administrasi & ACC Staff Setda.
                               </p>
                               <span className="text-[10px] text-amber-700 font-bold flex items-center gap-0.5 pt-1">
-                                Buka Portal Verifikasi &rarr;
+                                Buka Verifikasi &rarr;
                               </span>
                             </div>
                           ) : (
@@ -221,7 +221,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             ) : (
               <div className="flex items-center space-x-2 bg-amber-50 border border-amber-300 px-3.5 py-1.5 rounded-full text-xs text-amber-800 font-semibold backdrop-blur-md">
                 <ShieldCheck className="w-4 h-4 text-amber-600" />
-                <span>Portal Resmi TKKSD</span>
+                <span>Sistem Resmi TKKSD</span>
               </div>
             )}
           </div>

@@ -324,7 +324,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
       <div className="md:hidden space-y-4">
         <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 text-white rounded-2xl p-4 shadow-lg flex items-center justify-between">
           <div>
-            <span className="text-[10px] uppercase font-bold tracking-wider opacity-90">MEMITRAN Mobile Portal</span>
+            <span className="text-[10px] uppercase font-bold tracking-wider opacity-90">MEMITRAN Mobile</span>
             <h2 className="text-lg font-extrabold leading-tight">Halo, {user.name.split(',')[0]}</h2>
             <p className="text-[11px] opacity-90 font-medium">
               {user.role === 'TKKSD_ADMIN' ? 'Verifikator TKKSD Setda' : user.institutionName}
@@ -396,7 +396,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
           >
             <div className="flex items-center space-x-2">
               <CheckSquare className="w-5 h-5" />
-              <span>Portal ACC & Verifikasi Staff Setda</span>
+              <span>ACC & Verifikasi Staff Setda</span>
             </div>
             <span className="bg-white/20 px-2 py-0.5 rounded text-[10px]">Buka Dashboard &rarr;</span>
           </button>
@@ -616,13 +616,15 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                       <span>Detail Selengkapnya</span>
                     </button>
 
-                    <button
-                      onClick={() => onNavigateTab('proposal')}
-                      className="inline-flex items-center justify-center space-x-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
-                    >
-                      <span>Ajukan Kerjasama Tema Ini</span>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-amber-400" />
-                    </button>
+                    {user.role !== 'TKKSD_ADMIN' && (
+                      <button
+                        onClick={() => onNavigateTab('proposal')}
+                        className="inline-flex items-center justify-center space-x-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
+                      >
+                        <span>Ajukan Kerjasama Tema Ini</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 text-amber-400" />
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -848,16 +850,29 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                 >
                   Tutup
                 </button>
-                <button
-                  onClick={() => {
-                    setSelectedThemeModal(null);
-                    onNavigateTab('proposal');
-                  }}
-                  className="px-5 py-2 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold text-xs rounded-xl shadow-lg cursor-pointer transition flex items-center gap-1.5 border border-amber-300/40 active:scale-95"
-                >
-                  <span>Ajukan Proposal Sekarang</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </button>
+                {user.role === 'TKKSD_ADMIN' ? (
+                  <button
+                    onClick={() => {
+                      setSelectedThemeModal(null);
+                      onNavigateTab('setda_admin');
+                    }}
+                    className="px-5 py-2 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-600 text-white font-extrabold text-xs rounded-xl shadow-lg cursor-pointer transition flex items-center gap-1.5 border border-emerald-300/40 active:scale-95"
+                  >
+                    <span>Buka Menu ACC Setda</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setSelectedThemeModal(null);
+                      onNavigateTab('proposal');
+                    }}
+                    className="px-5 py-2 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold text-xs rounded-xl shadow-lg cursor-pointer transition flex items-center gap-1.5 border border-amber-300/40 active:scale-95"
+                  >
+                    <span>Ajukan Proposal Sekarang</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </button>
+                )}
               </div>
             </div>
 
@@ -881,12 +896,21 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             </div>
           </div>
 
-          <button
-            onClick={() => onNavigateTab('registration')}
-            className="text-xs font-bold text-amber-700 hover:text-amber-800 flex items-center gap-1 cursor-pointer"
-          >
-            <span>Mulai Pendaftaran &rarr;</span>
-          </button>
+          {user.role === 'TKKSD_ADMIN' ? (
+            <button
+              onClick={() => onNavigateTab('setda_admin')}
+              className="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1 cursor-pointer"
+            >
+              <span>Kelola Berkas Masuk &rarr;</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => onNavigateTab('registration')}
+              className="text-xs font-bold text-amber-700 hover:text-amber-800 flex items-center gap-1 cursor-pointer"
+            >
+              <span>Mulai Pendaftaran &rarr;</span>
+            </button>
+          )}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">

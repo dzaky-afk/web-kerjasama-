@@ -30,7 +30,7 @@ interface LoginPageProps {
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   // Set ke true untuk development/testing lokal, set ke false jika siap dipublikasikan (production)
-  const SHOW_QUICK_DEMO = false;
+  const SHOW_QUICK_DEMO = true;
 
   const [loginRole, setLoginRole] = useState<'MITRA' | 'TKKSD_ADMIN'>('MITRA');
   const [email, setEmail] = useState<string>('');
@@ -61,12 +61,31 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
     e.preventDefault();
     setError('');
 
-    if (!email.trim()) {
+    const trimmedEmail = email.trim().toLowerCase();
+
+    if (!trimmedEmail) {
       setError('Email / NIP Pengguna wajib diisi.');
       return;
     }
     if (!password.trim()) {
       setError('Kata sandi wajib diisi.');
+      return;
+    }
+    if (password.length < 6) {
+      setError('Kata sandi minimal harus 6 karakter.');
+      return;
+    }
+
+    // Validasi domain email berdasarkan role yang dipilih
+    const isGovDomain = trimmedEmail.endsWith('@gunungkidulkab.go.id') || trimmedEmail.endsWith('@memitran.go.id');
+
+    if (loginRole === 'TKKSD_ADMIN' && !isGovDomain) {
+      setError('Akses Staf Ditolak: Aparatur TKKSD wajib masuk menggunakan email resmi instansi (@gunungkidulkab.go.id atau @memitran.go.id).');
+      return;
+    }
+
+    if (loginRole === 'MITRA' && isGovDomain) {
+      setError('Akses Mitra Ditolak: Email dinas pemerintahan tidak dapat digunakan untuk akun Mitra Lembaga. Silakan gunakan tab "Aparatur TKKSD".');
       return;
     }
 
@@ -75,17 +94,28 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
     setTimeout(() => {
       setIsLoading(false);
       const dynamicName = generateNameFromEmail(email);
+      
+      let institutionName = 'PT Kerjasama Teknologi Nusantara';
+      if (loginRole === 'TKKSD_ADMIN') {
+        institutionName = 'Setda Kab. Gunungkidul';
+      } else {
+        const domainParts = trimmedEmail.split('@')[1]?.split('.');
+        if (domainParts && domainParts.length > 0 && domainParts[0] !== 'gmail' && domainParts[0] !== 'yahoo') {
+          institutionName = `Lembaga ${domainParts[0].charAt(0).toUpperCase() + domainParts[0].slice(1)}`;
+        }
+      }
+
       onLoginSuccess({
-        email,
+        email: trimmedEmail,
         name: dynamicName,
         role: loginRole,
-        institutionName: loginRole === 'TKKSD_ADMIN' ? 'Setda Kab. Gunungkidul' : 'PT Kerjasama Teknologi Nusantara',
+        institutionName,
         picType: loginRole === 'MITRA' ? 'PIC Utama (Penanggung Jawab)' : undefined
       });
     }, 600);
   };
 
-  // Quick Demo Login Handler
+  // Quick Demo Login Handler (Bypass validation for demo buttons since they use correct preset emails)
   const handleQuickLogin = (role: 'MITRA' | 'TKKSD_ADMIN', demoEmail: string) => {
     setLoginRole(role);
     setEmail(demoEmail);
@@ -109,16 +139,34 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
     e.preventDefault();
     setSsoError('');
 
-    if (!ssoEmail.trim()) {
+    const trimmedSsoEmail = ssoEmail.trim().toLowerCase();
+
+    if (!trimmedSsoEmail) {
       setSsoError('Alamat email wajib diisi.');
       return;
     }
-    if (!ssoEmail.includes('@')) {
+    if (!trimmedSsoEmail.includes('@')) {
       setSsoError('Format alamat email tidak valid.');
       return;
     }
     if (!ssoPassword.trim()) {
       setSsoError('Kata sandi wajib diisi.');
+      return;
+    }
+    if (ssoPassword.length < 6) {
+      setSsoError('Kata sandi minimal harus 6 karakter.');
+      return;
+    }
+
+    const isGovDomain = trimmedSsoEmail.endsWith('@gunungkidulkab.go.id') || trimmedSsoEmail.endsWith('@memitran.go.id');
+
+    if (loginRole === 'TKKSD_ADMIN' && !isGovDomain) {
+      setSsoError('Akses Staf Ditolak: Aparatur TKKSD wajib masuk menggunakan email resmi instansi (@gunungkidulkab.go.id atau @memitran.go.id).');
+      return;
+    }
+
+    if (loginRole === 'MITRA' && isGovDomain) {
+      setSsoError('Akses Mitra Ditolak: Email dinas pemerintahan tidak dapat digunakan untuk akun Mitra Lembaga. Silakan gunakan tab "Aparatur TKKSD".');
       return;
     }
 
@@ -127,13 +175,21 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
     setTimeout(() => {
       setSsoIsLoading(false);
       const providerLabel = activeSSOProvider === 'GOOGLE' ? 'Google SSO' : activeSSOProvider === 'MICROSOFT' ? 'Office 365' : 'Apple ID';
-      const dynamicName = `${generateNameFromEmail(ssoEmail)} (${providerLabel})`;
+      const dynamicName = `${generateNameFromEmail(trimmedSsoEmail)} (${providerLabel})`;
       
+      let institutionName = loginRole === 'TKKSD_ADMIN' ? 'TKKSD Kab. Gunungkidul' : 'PT Mitra Terpadu Indonesia';
+      if (loginRole === 'MITRA') {
+        const domainParts = trimmedSsoEmail.split('@')[1]?.split('.');
+        if (domainParts && domainParts.length > 0 && domainParts[0] !== 'gmail' && domainParts[0] !== 'yahoo') {
+          institutionName = `Lembaga ${domainParts[0].charAt(0).toUpperCase() + domainParts[0].slice(1)}`;
+        }
+      }
+
       onLoginSuccess({
-        email: ssoEmail,
+        email: trimmedSsoEmail,
         name: dynamicName,
         role: loginRole,
-        institutionName: loginRole === 'TKKSD_ADMIN' ? 'TKKSD Kab. Gunungkidul' : 'PT Mitra Terpadu Indonesia',
+        institutionName,
         picType: loginRole === 'MITRA' ? `PIC Utama (${activeSSOProvider} Auth)` : undefined
       });
       setActiveSSOProvider(null);
@@ -162,7 +218,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
             <div className="inline-flex items-center space-x-1.5 glass-badge px-3.5 py-0.5 rounded-full text-[11px] font-bold mb-1 border-amber-400 text-amber-800 bg-amber-50">
               <span>PEMERINTAH KABUPATEN GUNUNGKIDUL</span>
             </div>
-            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Portal MEMITRAN</h1>
+            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">MEMITRAN</h1>
             <p className="text-xs text-amber-900 font-medium">Sistem Pengajuan & Verifikasi Kerja Sama Daerah (TKKSD)</p>
           </div>
         </div>
@@ -276,7 +332,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
               <span>Memproses Autentikasi...</span>
             ) : (
               <>
-                <span>Masuk Portal MEMITRAN</span>
+                <span>Masuk MEMITRAN</span>
                 <ArrowRight className="w-4 h-4" />
               </>
             )}

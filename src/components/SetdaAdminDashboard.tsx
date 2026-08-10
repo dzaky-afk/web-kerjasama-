@@ -137,7 +137,7 @@ export const SetdaAdminDashboard: React.FC<SetdaAdminDashboardProps> = ({
             <span>KEPATUHAN REGULASI: PERMENDAGRI NO. 22 TAHUN 2020 & PERDA KSDPK</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-            Portal Verifikasi & Persetujuan Staff Setda
+            Verifikasi & Persetujuan Staff Setda
           </h1>
           <p className="text-xs sm:text-sm text-slate-700 font-medium">
             Pemeriksaan 4 kelengkapan berkas persyaratan regulasi dan pemberian ACC usulan kerja sama Kabupaten Gunungkidul.
