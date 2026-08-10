@@ -28,6 +28,9 @@ interface LoginPageProps {
 }
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
+  // Set ke true untuk development/testing lokal, set ke false jika siap dipublikasikan (production)
+  const SHOW_QUICK_DEMO = false;
+
   const [loginRole, setLoginRole] = useState<'MITRA' | 'TKKSD_ADMIN'>('MITRA');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -334,29 +337,31 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
         </div>
 
         {/* Demo Quick-Login Presets */}
-        <div className="pt-4 border-t border-slate-200 space-y-2">
-          <p className="text-[10px] uppercase tracking-wider font-extrabold text-amber-800 text-center">
-            Akses Uji Coba Cepat (Quick Demo)
-          </p>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => handleQuickLogin('MITRA', 'budi.santoso@kerjasamaterdepan.co.id')}
-              className="px-3 py-2.5 glass-card hover:bg-amber-50 text-[11px] text-amber-900 font-bold rounded-xl flex items-center space-x-1.5 border border-amber-300 transition cursor-pointer"
-            >
-              <Building2 className="w-3.5 h-3.5 text-amber-700 shrink-0" />
-              <span>Login Mitra DUDI</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickLogin('TKKSD_ADMIN', 'supriyadi@gunungkidulkab.go.id')}
-              className="px-3 py-2.5 glass-card hover:bg-emerald-50 text-[11px] text-emerald-900 font-bold rounded-xl flex items-center space-x-1.5 border border-emerald-300 transition cursor-pointer"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-              <span>Login Tim TKKSD</span>
-            </button>
+        {SHOW_QUICK_DEMO && (
+          <div className="pt-4 border-t border-slate-200 space-y-2">
+            <p className="text-[10px] uppercase tracking-wider font-extrabold text-amber-800 text-center">
+              Akses Uji Coba Cepat (Quick Demo)
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => handleQuickLogin('MITRA', 'budi.santoso@kerjasamaterdepan.co.id')}
+                className="px-3 py-2.5 glass-card hover:bg-amber-50 text-[11px] text-amber-900 font-bold rounded-xl flex items-center space-x-1.5 border border-amber-300 transition cursor-pointer"
+              >
+                <Building2 className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+                <span>Login Mitra DUDI</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickLogin('TKKSD_ADMIN', 'supriyadi@gunungkidulkab.go.id')}
+                className="px-3 py-2.5 glass-card hover:bg-emerald-50 text-[11px] text-emerald-900 font-bold rounded-xl flex items-center space-x-1.5 border border-emerald-300 transition cursor-pointer"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                <span>Login Tim TKKSD</span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Footnote */}
         <p className="text-[10px] text-slate-500 text-center font-medium">
