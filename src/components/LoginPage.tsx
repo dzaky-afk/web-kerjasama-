@@ -36,6 +36,16 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // Helper untuk membuat nama dinamis dari email
+  const generateNameFromEmail = (emailStr: string): string => {
+    if (!emailStr || !emailStr.includes('@')) return 'Pengguna MEMITRAN';
+    const namePart = emailStr.split('@')[0];
+    return namePart
+      .split(/[._-]/)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -53,9 +63,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
 
     setTimeout(() => {
       setIsLoading(false);
+      const dynamicName = generateNameFromEmail(email);
       onLoginSuccess({
         email,
-        name: loginRole === 'TKKSD_ADMIN' ? 'Drs. Supriyadi, M.Si.' : 'Budi Santoso, M.T.',
+        name: dynamicName,
         role: loginRole,
         institutionName: loginRole === 'TKKSD_ADMIN' ? 'Setda Kab. Gunungkidul' : 'PT Kerjasama Teknologi Nusantara',
         picType: loginRole === 'MITRA' ? 'PIC Utama (Penanggung Jawab)' : undefined
@@ -72,9 +83,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
 
     setTimeout(() => {
       setIsLoading(false);
+      const dynamicName = generateNameFromEmail(demoEmail);
       onLoginSuccess({
         email: demoEmail,
-        name: role === 'TKKSD_ADMIN' ? 'Drs. Supriyadi, M.Si.' : 'Budi Santoso, M.T.',
+        name: dynamicName,
         role,
         institutionName: role === 'TKKSD_ADMIN' ? 'Setda Kab. Gunungkidul' : 'PT Kerjasama Teknologi Nusantara',
         picType: role === 'MITRA' ? 'PIC Utama' : undefined
@@ -241,11 +253,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
             disabled={isLoading}
             onClick={() => {
               setIsLoading(true);
+              const loginEmail = email.trim() || (loginRole === 'TKKSD_ADMIN' ? 'supriyadi.google@gunungkidulkab.go.id' : 'mitra.google@gmail.com');
+              const dynamicName = `${generateNameFromEmail(loginEmail)} (Google SSO)`;
               setTimeout(() => {
                 setIsLoading(false);
                 onLoginSuccess({
-                  email: loginRole === 'TKKSD_ADMIN' ? 'supriyadi.google@gunungkidulkab.go.id' : 'mitra.google@gmail.com',
-                  name: loginRole === 'TKKSD_ADMIN' ? 'Drs. Supriyadi, M.Si. (Google Auth)' : 'Budi Santoso (Google Account)',
+                  email: loginEmail,
+                  name: dynamicName,
                   role: loginRole,
                   institutionName: loginRole === 'TKKSD_ADMIN' ? 'TKKSD Kab. Gunungkidul' : 'PT Mitra Terpadu Indonesia',
                   picType: loginRole === 'MITRA' ? 'PIC Utama (Google SSO)' : undefined
@@ -268,11 +282,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
             disabled={isLoading}
             onClick={() => {
               setIsLoading(true);
+              const loginEmail = email.trim() || (loginRole === 'TKKSD_ADMIN' ? 'supriyadi@gunungkidulkab.go.id' : 'mitra.office365@lembaga.co.id');
+              const dynamicName = `${generateNameFromEmail(loginEmail)} (Office 365)`;
               setTimeout(() => {
                 setIsLoading(false);
                 onLoginSuccess({
-                  email: loginRole === 'TKKSD_ADMIN' ? 'supriyadi@gunungkidulkab.go.id' : 'mitra.office365@lembaga.co.id',
-                  name: loginRole === 'TKKSD_ADMIN' ? 'Drs. Supriyadi, M.Si. (SSO Pemkab)' : 'Budi Santoso (Office 365)',
+                  email: loginEmail,
+                  name: dynamicName,
                   role: loginRole,
                   institutionName: loginRole === 'TKKSD_ADMIN' ? 'TKKSD Kab. Gunungkidul' : 'PT Mitra Terpadu Indonesia',
                   picType: loginRole === 'MITRA' ? 'PIC Utama' : undefined
@@ -295,11 +311,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
             disabled={isLoading}
             onClick={() => {
               setIsLoading(true);
+              const loginEmail = email.trim() || (loginRole === 'TKKSD_ADMIN' ? 'supriyadi.apple@gunungkidulkab.go.id' : 'mitra.apple@privaterelay.appleid.com');
+              const dynamicName = `${generateNameFromEmail(loginEmail)} (Apple ID)`;
               setTimeout(() => {
                 setIsLoading(false);
                 onLoginSuccess({
-                  email: loginRole === 'TKKSD_ADMIN' ? 'supriyadi.apple@gunungkidulkab.go.id' : 'mitra.apple@privaterelay.appleid.com',
-                  name: loginRole === 'TKKSD_ADMIN' ? 'Drs. Supriyadi, M.Si. (Apple ID)' : 'Budi Santoso (Apple ID)',
+                  email: loginEmail,
+                  name: dynamicName,
                   role: loginRole,
                   institutionName: loginRole === 'TKKSD_ADMIN' ? 'TKKSD Kab. Gunungkidul' : 'PT Mitra Terpadu Indonesia',
                   picType: loginRole === 'MITRA' ? 'PIC Utama (Apple SSO)' : undefined

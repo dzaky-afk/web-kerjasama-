@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -118,7 +118,7 @@ model Proposal {
   registrationCode              String          @unique // e.g., "PRP-202608-001"
   title                         String          // Judul Usulan Kerja Sama
   sector                        ProposalSector  // Sektor Fokus Kerja Sama
-  description                   String          @db.Text // Ringkasan Latar Belakang & Tujuan
+  description                   String          @db.LongText // Ringkasan Latar Belakang & Tujuan
   targetLocation                String          // Lokasi Pelaksanaan Kerja Sama
   budgetEstimate                Decimal         @db.Decimal(15, 2) // Estimasi Nilai Kerja Sama / Investasi (Rp)
   durationMonths                Int             @default(12) // Durasi Rencana Kerja Sama (Bulan)
@@ -151,7 +151,7 @@ model ProposalLog {
   status      ProposalStatus // Status pada tahapan log ini
   actorName   String         // Nama Verifikator / Tim TKKSD / Staff Setda
   actorRole   String         // Jabatan / Instansi Verifikator (misal: "Staff Sekretariat TKKSD Setda")
-  comment     String         @db.Text // Catatan Review / Alasan Rekomendasi / Perbaikan
+  comment     String         @db.LongText // Catatan Review / Alasan Rekomendasi / Perbaikan
   createdAt   DateTime       @default(now())
 
   @@map("proposal_logs")
@@ -164,7 +164,7 @@ model Regulation {
   year        Int                // Tahun Penerbitan
   title       String             // Judul Peraturan
   category    RegulationCategory // Perda / Perbup / Juknis
-  description String             @db.Text // Abstraksi / Penjelasan Peraturan
+  description String             @db.LongText // Abstraksi / Penjelasan Peraturan
   fileUrl     String             // URL Berkas Peraturan (PDF)
   publishedAt DateTime
   isPublished Boolean            @default(true)
@@ -183,9 +183,9 @@ model Monev {
   period              MonevPeriod // Triwulan / Tahunan
   progressPercentage  Float       // Persentase Capaian (%)
   indicator           String      // Indikator Kinerja Utama (IKU) Kerja Sama
-  achievementDetails  String      @db.Text // Realisasi Program & Hasil Lapangan
-  obstacle            String?     @db.Text // Kendala yang Dihadapi
-  solution            String?     @db.Text // Tindak Lanjut Solusi
+  achievementDetails  String      @db.LongText // Realisasi Program & Hasil Lapangan
+  obstacle            String?     @db.LongText // Kendala yang Dihadapi
+  solution            String?     @db.LongText // Tindak Lanjut Solusi
   reportFileUrl       String?     // File Laporan Lapangan & Foto Kegiatan (PDF/ZIP)
 
   evaluatedBy         String      // Nama Auditor / Tim Monev TKKSD

@@ -129,7 +129,46 @@ export function App() {
   };
 
   const handleUpdateProposal = async (updated: Proposal) => {
-    const savedProp = await dbService.saveProposal(updated);
+    // Cari proposal lama di state
+    const original = proposals.find(p => p.id === updated.id);
+    if (!original) {
+      const savedProp = await dbService.saveProposal(updated);
+      setProposals(prev => [savedProp, ...prev.filter(p => p.id !== savedProp.id)]);
+      return;
+    }
+
+    let savedProp: Proposal;
+    
+    // 1. Cek apakah ada penambahan MonevReport
+    if (updated.monevReports.length > original.monevReports.length) {
+      const newReport = updated.monevReports[updated.monevReports.length - 1];
+      savedProp = await dbService.addMonevReport(updated.id, {
+        period: newReport.period,
+        progressPercentage: newReport.progressPercentage,
+        indicator: newReport.indicator,
+        achievementDetails: newReport.achievementDetails,
+        obstacle: newReport.obstacle,
+        solution: newReport.solution,
+        reportFileUrl: newReport.reportFileUrl,
+        evaluatedBy: newReport.evaluatedBy
+      });
+    } 
+    // 2. Cek apakah ada perubahan status
+    else if (updated.status !== original.status) {
+      const newLog = updated.logs[0]; // Log baru biasanya berada di index pertama
+      savedProp = await dbService.updateProposalStatus(
+        updated.id,
+        updated.status,
+        newLog?.actorName || 'Staff Setda',
+        newLog?.actorRole || 'Verifikator TKKSD',
+        newLog?.comment || 'Status proposal diperbarui.'
+      );
+    } 
+    // 3. Fallback jika tidak ada perubahan spesifik
+    else {
+      savedProp = await dbService.saveProposal(updated);
+    }
+
     setProposals(prev => prev.map(p => p.id === savedProp.id ? savedProp : p));
   };
 
