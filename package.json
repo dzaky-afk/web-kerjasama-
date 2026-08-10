@@ -11,7 +11,7 @@
     "build": "tsc && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "tsx server.ts"
+    "start": "prisma generate && prisma db push && tsx server.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.10.2",
