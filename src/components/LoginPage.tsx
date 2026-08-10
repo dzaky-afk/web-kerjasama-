@@ -388,132 +388,262 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
 
       {/* MODAL SIMULASI LOGIN SSO (GOOGLE, MICROSOFT, APPLE) */}
       {activeSSOProvider && (
-        <div className="fixed inset-0 bg-slate-950/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-slate-200/80 p-6 space-y-5 animate-scale-in relative">
-            
-            {/* Close Button */}
-            <button
-              onClick={() => setActiveSSOProvider(null)}
-              className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
+        <div className="fixed inset-0 bg-[#f0f4f9] sm:bg-[#f0f4f9] z-50 flex flex-col items-center justify-center p-4 animate-fade-in overflow-y-auto">
+          
+          {/* Close Button Melayang */}
+          <button
+            onClick={() => setActiveSSOProvider(null)}
+            className="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-200/80 text-slate-500 hover:text-slate-800 transition cursor-pointer z-50"
+            title="Tutup & Kembali"
+          >
+            <X className="w-5 h-5" />
+          </button>
 
-            {/* Provider Logo & Header */}
-            <div className="flex flex-col items-center text-center space-y-2 pt-2">
-              {activeSSOProvider === 'GOOGLE' && (
-                <>
-                  <svg className="w-10 h-10" viewBox="0 0 24 24">
+          {/* 1. GOOGLE SIGN-IN INTERFACE */}
+          {activeSSOProvider === 'GOOGLE' && (
+            <div className="w-full max-w-2xl flex flex-col items-center space-y-6">
+              {/* Google White Card */}
+              <div className="w-full bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-md flex flex-col md:flex-row gap-8 md:gap-12 min-h-[400px] text-left animate-scale-in relative">
+                
+                {/* Kolom Kiri: Google Brand Info */}
+                <div className="flex-1 flex flex-col justify-start">
+                  <svg className="w-12 h-12 animate-logo-glow" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
                     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
                   </svg>
-                  <h3 className="text-base font-extrabold text-slate-900 font-sans tracking-tight">Login dengan Google</h3>
-                  <p className="text-xs text-slate-500 font-medium">Gunakan Akun Google Anda untuk masuk ke MEMITRAN</p>
-                </>
-              )}
+                  <h2 className="text-3xl font-normal text-slate-800 font-sans mt-4">Sign in</h2>
+                  <p className="text-sm text-slate-700 mt-2 font-medium">Use your Google Account</p>
+                  <p className="text-xs text-slate-500 font-medium mt-1">to continue to MEMITRAN Gunungkidul</p>
+                </div>
 
-              {activeSSOProvider === 'MICROSOFT' && (
-                <>
-                  <svg className="w-10 h-10" viewBox="0 0 23 23">
-                    <path fill="#f35325" d="M1 1h10v10H1z"/>
-                    <path fill="#81bc06" d="M12 1h10v10H12z"/>
-                    <path fill="#05a6f0" d="M1 12h10v10H1z"/>
-                    <path fill="#ffba08" d="M12 12h10v10H12z"/>
-                  </svg>
-                  <h3 className="text-base font-extrabold text-slate-900 font-sans tracking-tight">Masuk (Sign in)</h3>
-                  <p className="text-xs text-slate-500 font-medium">Gunakan Akun SSO Pemkab / Microsoft kerja Anda</p>
-                </>
-              )}
+                {/* Kolom Kanan: Google Form Input */}
+                <div className="flex-1 flex flex-col justify-between">
+                  <form onSubmit={handleSSOSubmit} className="space-y-4">
+                    {ssoError && (
+                      <div className="p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-[11px] font-bold rounded-xl text-center">
+                        {ssoError}
+                      </div>
+                    )}
 
-              {activeSSOProvider === 'APPLE' && (
-                <>
-                  <svg className="w-10 h-10 fill-slate-900" viewBox="0 0 170 170">
-                    <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.34.13-9.14-1.9-14.4-6.1-3.26-2.64-7.14-7.25-11.64-13.84-6.19-9.13-11.05-19.57-14.57-31.34-3.52-11.76-5.28-23.01-5.28-33.74 0-15.09 3.65-27.46 10.95-37.1 7.3-9.64 16.51-14.54 27.63-14.7 5.09.12 10.45 1.41 16.08 3.87 5.63 2.46 9.42 3.73 11.37 3.82 2.29 0 6.32-1.34 12.09-4.02 5.77-2.68 11.1-4.04 15.98-4.08 8.01.12 15.28 2.37 21.82 6.75 6.54 4.38 11.2 10.23 13.98 17.55-12.59 7.61-18.76 17.84-18.52 30.7.24 10.2 4.13 18.66 11.67 25.37 7.54 6.71 16.36 10.51 26.46 11.4-2.18 6.53-4.99 13.23-8.43 20.1zM119.22 31.62c0-7.39 2.65-14.35 7.95-20.88C132.47 4.21 139.69.75 148.83 0c.24.97.36 1.94.36 2.91 0 7.33-2.73 14.35-8.19 21.06-5.46 6.71-12.63 10.36-21.5 10.95-.08-1.09-.28-2.2-.28-3.3z"/>
-                  </svg>
-                  <h3 className="text-base font-extrabold text-slate-900 font-sans tracking-tight">Masuk dengan Apple ID</h3>
-                  <p className="text-xs text-slate-500 font-medium">Gunakan ID Apple Anda untuk melanjutkan</p>
-                </>
-              )}
+                    <div className="space-y-4">
+                      {/* Email Field */}
+                      <div className="relative">
+                        <input
+                          type="email"
+                          value={ssoEmail}
+                          onChange={(e) => setSsoEmail(e.target.value)}
+                          placeholder="Email or phone"
+                          required
+                          disabled={ssoIsLoading}
+                          className="w-full px-3.5 py-4 border border-slate-300 rounded-lg text-sm text-slate-900 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none transition bg-white"
+                        />
+                      </div>
+
+                      {/* Password Field */}
+                      <div className="relative">
+                        <input
+                          type="password"
+                          value={ssoPassword}
+                          onChange={(e) => setSsoPassword(e.target.value)}
+                          placeholder="Enter your password"
+                          required
+                          disabled={ssoIsLoading}
+                          className="w-full px-3.5 py-4 border border-slate-300 rounded-lg text-sm text-slate-900 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none transition bg-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="text-[11px] text-slate-600 mt-2 leading-relaxed">
+                      Not your computer? Use Guest mode to sign in privately.{' '}
+                      <span className="text-blue-600 font-bold hover:underline cursor-pointer">Learn more</span>
+                    </div>
+
+                    {/* Actions Row */}
+                    <div className="flex items-center justify-between pt-6">
+                      <button
+                        type="button"
+                        onClick={() => setActiveSSOProvider(null)}
+                        className="text-xs font-bold text-blue-600 hover:bg-blue-50 px-3.5 py-2.5 rounded-lg transition cursor-pointer"
+                      >
+                        Create account
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={ssoIsLoading}
+                        className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs px-6 py-2.5 rounded-full transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                      >
+                        {ssoIsLoading ? (
+                          <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                          <span>Next</span>
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              {/* Google Footer */}
+              <div className="w-full max-w-2xl flex items-center justify-between text-[11px] text-slate-600 px-2">
+                <div className="flex items-center gap-1.5">
+                  <span>English (United States)</span>
+                  <span className="text-[8px] text-slate-400">▼</span>
+                </div>
+                <div className="flex items-center gap-6">
+                  <span className="hover:underline cursor-pointer">Help</span>
+                  <span className="hover:underline cursor-pointer">Privacy</span>
+                  <span className="hover:underline cursor-pointer">Terms</span>
+                </div>
+              </div>
             </div>
+          )}
 
-            {/* Error Message */}
-            {ssoError && (
-              <div className="p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-[11px] font-bold rounded-xl text-center">
-                {ssoError}
+          {/* 2. MICROSOFT SIGN-IN INTERFACE */}
+          {activeSSOProvider === 'MICROSOFT' && (
+            <div className="w-full max-w-sm bg-white border border-slate-300 shadow-xl p-8 sm:p-10 text-left animate-scale-in space-y-5 rounded-lg">
+              <svg className="w-9 h-9" viewBox="0 0 23 23">
+                <path fill="#f35325" d="M1 1h10v10H1z"/>
+                <path fill="#81bc06" d="M12 1h10v10H12z"/>
+                <path fill="#05a6f0" d="M1 12h10v10H1z"/>
+                <path fill="#ffba08" d="M12 12h10v10H12z"/>
+              </svg>
+
+              <h2 className="text-xl font-semibold text-slate-900 font-sans tracking-tight">Sign in</h2>
+              <p className="text-xs text-slate-600 font-medium">Use your SSO Pemkab / Microsoft organizational account</p>
+
+              {ssoError && (
+                <div className="p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-[11px] font-bold rounded-xl text-center">
+                  {ssoError}
+                </div>
+              )}
+
+              <form onSubmit={handleSSOSubmit} className="space-y-4">
+                <div>
+                  <input
+                    type="email"
+                    value={ssoEmail}
+                    onChange={(e) => setSsoEmail(e.target.value)}
+                    placeholder="Email, phone, or Skype"
+                    required
+                    disabled={ssoIsLoading}
+                    className="w-full border-b border-slate-400 py-1.5 text-xs text-slate-950 outline-none focus:border-blue-600 transition bg-white font-semibold"
+                  />
+                </div>
+
+                <div>
+                  <input
+                    type="password"
+                    value={ssoPassword}
+                    onChange={(e) => setSsoPassword(e.target.value)}
+                    placeholder="Password"
+                    required
+                    disabled={ssoIsLoading}
+                    className="w-full border-b border-slate-400 py-1.5 text-xs text-slate-950 outline-none focus:border-blue-600 transition bg-white font-semibold"
+                  />
+                </div>
+
+                <div className="text-[11px] text-slate-700 space-y-1 pt-1 font-medium">
+                  <div>No account? <span className="text-blue-600 hover:underline cursor-pointer">Create one!</span></div>
+                  <div className="text-blue-600 hover:underline cursor-pointer">Can't access your account?</div>
+                </div>
+
+                {/* Microsoft Actions */}
+                <div className="flex items-center justify-end gap-2 pt-6">
+                  <button
+                    type="button"
+                    onClick={() => setActiveSSOProvider(null)}
+                    disabled={ssoIsLoading}
+                    className="bg-slate-200 hover:bg-slate-300 text-slate-800 px-6 py-2 rounded-none text-xs font-semibold transition cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={ssoIsLoading}
+                    className="bg-[#0067b8] hover:bg-[#005da6] text-white px-8 py-2 rounded-none text-xs font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    {ssoIsLoading ? (
+                      <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <span>Sign in</span>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
+
+          {/* 3. APPLE ID SIGN-IN INTERFACE */}
+          {activeSSOProvider === 'APPLE' && (
+            <div className="w-full max-w-sm bg-white border border-slate-200 shadow-2xl p-8 sm:p-10 text-center animate-scale-in space-y-6 rounded-3xl">
+              <div className="flex justify-center">
+                <svg className="w-12 h-12 fill-slate-900" viewBox="0 0 170 170">
+                  <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.34.13-9.14-1.9-14.4-6.1-3.26-2.64-7.14-7.25-11.64-13.84-6.19-9.13-11.05-19.57-14.57-31.34-3.52-11.76-5.28-23.01-5.28-33.74 0-15.09 3.65-27.46 10.95-37.1 7.3-9.64 16.51-14.54 27.63-14.7 5.09.12 10.45 1.41 16.08 3.87 5.63 2.46 9.42 3.73 11.37 3.82 2.29 0 6.32-1.34 12.09-4.02 5.77-2.68 11.1-4.04 15.98-4.08 8.01.12 15.28 2.37 21.82 6.75 6.54 4.38 11.2 10.23 13.98 17.55-12.59 7.61-18.76 17.84-18.52 30.7.24 10.2 4.13 18.66 11.67 25.37 7.54 6.71 16.36 10.51 26.46 11.4-2.18 6.53-4.99 13.23-8.43 20.1zM119.22 31.62c0-7.39 2.65-14.35 7.95-20.88C132.47 4.21 139.69.75 148.83 0c.24.97.36 1.94.36 2.91 0 7.33-2.73 14.35-8.19 21.06-5.46 6.71-12.63 10.36-21.5 10.95-.08-1.09-.28-2.2-.28-3.3z"/>
+                </svg>
               </div>
-            )}
 
-            {/* SSO Form */}
-            <form onSubmit={handleSSOSubmit} className="space-y-4">
-              <div>
-                <label className="text-[10px] text-slate-600 font-black block uppercase mb-1">
-                  {activeSSOProvider === 'APPLE' ? 'Apple ID' : 'Alamat Email'}
-                </label>
-                <input
-                  type="email"
-                  value={ssoEmail}
-                  onChange={(e) => setSsoEmail(e.target.value)}
-                  placeholder={
-                    activeSSOProvider === 'GOOGLE' 
-                      ? 'nama@gmail.com' 
-                      : activeSSOProvider === 'MICROSOFT' 
-                      ? 'nama@gunungkidulkab.go.id' 
-                      : 'nama@icloud.com'
-                  }
-                  required
-                  disabled={ssoIsLoading}
-                  className="w-full glass-input rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 placeholder-slate-400 bg-white"
-                />
-              </div>
+              <h2 className="text-xl font-bold text-slate-900 font-sans tracking-tight">Sign in with Apple ID</h2>
 
-              <div>
-                <label className="text-[10px] text-slate-600 font-black block uppercase mb-1">
-                  Kata Sandi
-                </label>
-                <input
-                  type="password"
-                  value={ssoPassword}
-                  onChange={(e) => setSsoPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                  disabled={ssoIsLoading}
-                  className="w-full glass-input rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 placeholder-slate-400 bg-white"
-                />
-              </div>
+              {ssoError && (
+                <div className="p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-[11px] font-bold rounded-xl text-center">
+                  {ssoError}
+                </div>
+              )}
 
-              {/* Actions */}
-              <div className="flex items-center gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setActiveSSOProvider(null)}
-                  disabled={ssoIsLoading}
-                  className="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl font-extrabold text-xs transition cursor-pointer"
-                >
-                  Batal
-                </button>
-                <button
-                  type="submit"
-                  disabled={ssoIsLoading}
-                  className={`flex-1 py-2 rounded-xl font-extrabold text-xs text-white transition flex items-center justify-center gap-1.5 cursor-pointer ${
-                    activeSSOProvider === 'GOOGLE' 
-                      ? 'bg-blue-600 hover:bg-blue-700' 
-                      : activeSSOProvider === 'MICROSOFT' 
-                      ? 'bg-slate-800 hover:bg-slate-900' 
-                      : 'bg-black hover:bg-neutral-900'
-                  }`}
-                >
-                  {ssoIsLoading ? (
-                    <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    <span>Lanjutkan</span>
-                  )}
-                </button>
-              </div>
-            </form>
+              <form onSubmit={handleSSOSubmit} className="space-y-4">
+                <div className="space-y-3">
+                  <input
+                    type="email"
+                    value={ssoEmail}
+                    onChange={(e) => setSsoEmail(e.target.value)}
+                    placeholder="Apple ID"
+                    required
+                    disabled={ssoIsLoading}
+                    className="w-full border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition bg-white"
+                  />
+                  <input
+                    type="password"
+                    value={ssoPassword}
+                    onChange={(e) => setSsoPassword(e.target.value)}
+                    placeholder="Password"
+                    required
+                    disabled={ssoIsLoading}
+                    className="w-full border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition bg-white"
+                  />
+                </div>
 
-          </div>
+                <div className="text-[11px] text-blue-600 hover:underline cursor-pointer pt-2 font-medium">
+                  Forgot Apple ID or Password?
+                </div>
+
+                {/* Apple Actions */}
+                <div className="flex items-center justify-between pt-6">
+                  <button
+                    type="button"
+                    onClick={() => setActiveSSOProvider(null)}
+                    className="text-xs font-bold text-blue-600 hover:underline cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={ssoIsLoading}
+                    className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition cursor-pointer font-bold"
+                    title="Sign In"
+                  >
+                    {ssoIsLoading ? (
+                      <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <span>→</span>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
+
         </div>
       )}
     </div>
