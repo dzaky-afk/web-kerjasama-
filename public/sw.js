@@ -1,18 +1,7 @@
-// MEMITRAN Service Worker for Android & iOS Mobile Offline Performance
-const CACHE_NAME = 'memitran-v1';
-const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/logo-gunungkidul.svg'
-];
+// MEMITRAN Service Worker - Cache Clearing & Network First (Fixing Blank Page Issues)
+const CACHE_NAME = 'memitran-v2';
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
-  );
   self.skipWaiting();
 });
 
@@ -20,18 +9,21 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
-        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+        keys.map((key) => caches.delete(key))
       );
     })
   );
   self.clients.claim();
 });
 
+// Network-First strategy to prevent blank pages on updates
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      return cached || fetch(event.request).catch(() => cached);
+    fetch(event.request).catch(() => {
+      return caches.match(event.request);
     })
   );
 });
+
