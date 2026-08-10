@@ -2,6 +2,23 @@ import { Institution, Proposal, Regulation, ProposalLog, MonevReport, ProposalSt
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || (typeof window !== 'undefined' ? `http://${window.location.hostname}:3001/api` : 'http://localhost:3001/api');
 
+// Helper function to fetch with a timeout so that the UI doesn't hang if backend or database is offline/unreachable
+const fetchWithTimeout = async (url: string, options: RequestInit = {}, timeoutMs = 1500): Promise<Response> => {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal
+    });
+    clearTimeout(id);
+    return response;
+  } catch (err) {
+    clearTimeout(id);
+    throw err;
+  }
+};
+
 // Initial Seed Data for fallback storage (Empty for production)
 const INITIAL_INSTITUTIONS: Institution[] = [];
 const INITIAL_PROPOSALS: Proposal[] = [];
@@ -74,7 +91,7 @@ export const dbService = {
   // Check Backend Connection Status
   async isBackendConnected(): Promise<boolean> {
     try {
-      const res = await fetch(`${API_BASE_URL}/health`, { method: 'GET' });
+      const res = await fetchWithTimeout(`${API_BASE_URL}/health`, { method: 'GET' }, 1000);
       return res.ok;
     } catch {
       return false;
@@ -84,7 +101,7 @@ export const dbService = {
   // 1. INSTITUTIONS
   async getInstitutions(): Promise<Institution[]> {
     try {
-      const res = await fetch(`${API_BASE_URL}/institutions`);
+      const res = await fetchWithTimeout(`${API_BASE_URL}/institutions`);
       if (res.ok) {
         const data = await res.json();
         setStoredData('memitran_institutions', data);
@@ -98,7 +115,7 @@ export const dbService = {
 
   async saveInstitution(institution: Institution): Promise<Institution> {
     try {
-      const res = await fetch(`${API_BASE_URL}/institutions`, {
+      const res = await fetchWithTimeout(`${API_BASE_URL}/institutions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(institution)
@@ -124,7 +141,7 @@ export const dbService = {
   // 2. PROPOSALS
   async getProposals(): Promise<Proposal[]> {
     try {
-      const res = await fetch(`${API_BASE_URL}/proposals`);
+      const res = await fetchWithTimeout(`${API_BASE_URL}/proposals`);
       if (res.ok) {
         const data = await res.json();
         setStoredData('memitran_proposals', data);
@@ -138,7 +155,7 @@ export const dbService = {
 
   async saveProposal(proposal: Proposal): Promise<Proposal> {
     try {
-      const res = await fetch(`${API_BASE_URL}/proposals`, {
+      const res = await fetchWithTimeout(`${API_BASE_URL}/proposals`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(proposal)
@@ -169,7 +186,7 @@ export const dbService = {
     comment: string
   ): Promise<Proposal> {
     try {
-      const res = await fetch(`${API_BASE_URL}/proposals/${proposalId}/status`, {
+      const res = await fetchWithTimeout(`${API_BASE_URL}/proposals/${proposalId}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus, actorName, actorRole, comment })
@@ -210,7 +227,7 @@ export const dbService = {
 
   async addMonevReport(proposalId: string, reportData: Omit<MonevReport, 'id' | 'proposalId' | 'evaluatedAt'>): Promise<Proposal> {
     try {
-      const res = await fetch(`${API_BASE_URL}/proposals/${proposalId}/monev`, {
+      const res = await fetchWithTimeout(`${API_BASE_URL}/proposals/${proposalId}/monev`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reportData)
@@ -249,7 +266,7 @@ export const dbService = {
   // 3. REGULATIONS
   async getRegulations(): Promise<Regulation[]> {
     try {
-      const res = await fetch(`${API_BASE_URL}/regulations`);
+      const res = await fetchWithTimeout(`${API_BASE_URL}/regulations`);
       if (res.ok) {
         const data = await res.json();
         setStoredData('memitran_regulations', data);
@@ -261,3 +278,4 @@ export const dbService = {
     return getStoredData<Regulation[]>('memitran_regulations', INITIAL_REGULATIONS);
   }
 };
+
