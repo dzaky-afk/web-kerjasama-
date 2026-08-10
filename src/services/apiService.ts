@@ -1,6 +1,6 @@
 import { Institution, Proposal, Regulation, ProposalLog, MonevReport, ProposalStatus } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || (typeof window !== 'undefined' ? `http://${window.location.hostname}:3001/api` : 'http://localhost:3001/api');
 
 // Initial Seed Data for fallback storage (Empty for production)
 const INITIAL_INSTITUTIONS: Institution[] = [];
