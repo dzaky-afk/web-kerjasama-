@@ -217,7 +217,7 @@ app.post('/api/proposals', async (req: Request, res: Response) => {
 // PATCH proposal status (Approve / Reject / Change Status)
 app.patch('/api/proposals/:id/status', async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { status, actorName, actorRole, comment } = req.body;
 
     const updated = await prisma.proposal.update({
@@ -250,7 +250,7 @@ app.patch('/api/proposals/:id/status', async (req: Request, res: Response) => {
 // POST Monev report for a proposal
 app.post('/api/proposals/:id/monev', async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { period, progressPercentage, indicator, achievementDetails, obstacle, solution, reportFileUrl, evaluatedBy } = req.body;
 
     await prisma.monev.create({
